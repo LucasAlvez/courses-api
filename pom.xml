@@ -3,13 +3,13 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.events</groupId>
+	<groupId>com.courses</groupId>
 	<artifactId>api</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
 
 	<name>api</name>
-	<description>API Restfull de Eventos</description>
+	<description>API Restfull de Cursos</description>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
