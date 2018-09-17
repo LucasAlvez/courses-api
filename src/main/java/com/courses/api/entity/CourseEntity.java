@@ -2,32 +2,46 @@ package com.courses.api.entity;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters.LocalDateTimeConverter;
 
-@Entity(name="courses")
-@Table(name="courses")
+@Entity(name = "courses")
+@Table(name = "courses")
 public class CourseEntity implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	Long id;
+	private Long id;
 
-	String name;
+	private String name;
 
-	String description;
+	private String description;
+	
+	private String duration;
 
 	@Convert(converter = LocalDateTimeConverter.class)
-	private LocalDateTime createdAt;
+	private LocalDateTime createDate;
+	
+	@Convert(converter = LocalDateTimeConverter.class)
+	private LocalDateTime updateDate;
+
+	@ManyToMany
+	@JoinTable(name = "courses_categories", joinColumns = @JoinColumn(name = "course_id"), 
+	inverseJoinColumns = @JoinColumn(name = "category_id"))
+	private List<CategoryEntity> categories;
 
 	public Long getId() {
 		return id;
@@ -44,6 +58,14 @@ public class CourseEntity implements Serializable {
 	public void setName(String name) {
 		this.name = name;
 	}
+	
+	public String getDuration() {
+		return duration;
+	}
+	
+	public void setDuration(String duration) {
+		this.duration = duration;
+	}
 
 	public String getDescription() {
 		return description;
@@ -52,17 +74,21 @@ public class CourseEntity implements Serializable {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
 	
 	public LocalDateTime getCreatedAt() {
-		return createdAt;
+		return createDate;
+	}
+
+	public void setCreatedAt(LocalDateTime createdAt) {
+		this.createDate = createdAt;
 	}
 	
-	public void setCreatedAt(LocalDateTime createdAt) {
-		this.createdAt = createdAt;
+	public LocalDateTime getUpdateDate() {
+		return updateDate;
+	}
+	
+	public void setUpdateDate(LocalDateTime updateDate) {
+		this.updateDate = updateDate;
 	}
 
 	@Override
