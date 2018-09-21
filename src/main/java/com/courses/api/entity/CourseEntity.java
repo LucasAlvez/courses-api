@@ -75,12 +75,12 @@ public class CourseEntity implements Serializable {
 		this.description = description;
 	}
 	
-	public LocalDateTime getCreatedAt() {
+	public LocalDateTime getCreateDate() {
 		return createDate;
 	}
-
-	public void setCreatedAt(LocalDateTime createdAt) {
-		this.createDate = createdAt;
+	
+	public void setCreateDate(LocalDateTime createDate) {
+		this.createDate = createDate;
 	}
 	
 	public LocalDateTime getUpdateDate() {
@@ -89,6 +89,14 @@ public class CourseEntity implements Serializable {
 	
 	public void setUpdateDate(LocalDateTime updateDate) {
 		this.updateDate = updateDate;
+	}
+	
+	public List<CategoryEntity> getCategories() {
+		return categories;
+	}
+	
+	public void setCategories(List<CategoryEntity> categories) {
+		this.categories = categories;
 	}
 
 	@Override

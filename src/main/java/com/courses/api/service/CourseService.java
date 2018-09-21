@@ -8,7 +8,9 @@ import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.courses.api.builder.CourseBuilder;
+import com.courses.api.entity.CategoryEntity;
 import com.courses.api.entity.CourseEntity;
+import com.courses.api.repository.CategoryRepository;
 import com.courses.api.repository.CourseRepository;
 import com.courses.api.request.CourseRequest;
 import com.courses.api.response.CourseResponse;
@@ -18,9 +20,14 @@ public class CourseService {
 
 	@Autowired
 	CourseRepository courseRepository;
+	
+	@Autowired
+	CategoryRepository categoryRepository;
 
 	public CourseResponse create(CourseRequest request) throws ResourceNotFoundException, Exception {
-		CourseEntity course = CourseBuilder.buildRequest(request);
+		
+		List<CategoryEntity> categories = categoryRepository.findAllById(request.getCategoriesId());
+		CourseEntity course = CourseBuilder.buildRequest(request, categories);
 		CourseEntity newCourse = courseRepository.save(course);
 		return CourseBuilder.buildResponse(newCourse);
 	}
@@ -29,8 +36,9 @@ public class CourseService {
 			throws Exception, ResourceNotFoundException {
 
 		CourseEntity courseById = getCourseById(courseId);
+		List<CategoryEntity> categories = categoryRepository.findAllById(request.getCategoriesId());
 
-		CourseEntity course = CourseBuilder.buildUpdateRequest(request, courseById);
+		CourseEntity course = CourseBuilder.buildUpdateRequest(request, courseById, categories);
 		CourseEntity newCourse = courseRepository.save(course);
 		return CourseBuilder.buildResponse(newCourse);
 	}

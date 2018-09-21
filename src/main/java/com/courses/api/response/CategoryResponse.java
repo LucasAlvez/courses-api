@@ -1,45 +1,31 @@
 package com.courses.api.response;
 
-import java.util.List;
-
-public class CourseResponse {
-
+public class CategoryResponse {
+	
 	private Long id;
-
+	
 	private String name;
-
-	private String description;
 	
 	private String createDate;
 	
 	private String updateDate;
 	
-	private List<CategoryResponse> categoriesId;
-
 	public Long getId() {
 		return id;
 	}
-
+	
 	public void setId(Long id) {
 		this.id = id;
 	}
-
+	
 	public String getName() {
 		return name;
 	}
-
+	
 	public void setName(String name) {
 		this.name = name;
 	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
+	
 	public String getCreateDate() {
 		return createDate;
 	}
@@ -54,13 +40,5 @@ public class CourseResponse {
 	
 	public void setUpdateDate(String updateDate) {
 		this.updateDate = updateDate;
-	}
-	
-	public List<CategoryResponse> getCategoriesId() {
-		return categoriesId;
-	}
-	
-	public void setCategoriesId(List<CategoryResponse> categoriesId) {
-		this.categoriesId = categoriesId;
 	}
 }
