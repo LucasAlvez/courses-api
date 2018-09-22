@@ -14,8 +14,8 @@ import javax.persistence.Table;
 
 import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters.LocalDateTimeConverter;
 
-@Entity(name="courses")
-@Table(name="courses")
+@Entity(name="categories")
+@Table(name="categories")
 public class CategoryEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;

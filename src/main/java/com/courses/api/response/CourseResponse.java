@@ -14,7 +14,7 @@ public class CourseResponse {
 	
 	private String updateDate;
 	
-	private List<CategoryResponse> categoriesId;
+	private List<String> catgories;
 
 	public Long getId() {
 		return id;
@@ -56,11 +56,11 @@ public class CourseResponse {
 		this.updateDate = updateDate;
 	}
 	
-	public List<CategoryResponse> getCategoriesId() {
-		return categoriesId;
+	public List<String> getCatgories() {
+		return catgories;
 	}
 	
-	public void setCategoriesId(List<CategoryResponse> categoriesId) {
-		this.categoriesId = categoriesId;
+	public void setCatgories(List<String> catgories) {
+		this.catgories = catgories;
 	}
 }

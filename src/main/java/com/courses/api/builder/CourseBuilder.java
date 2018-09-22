@@ -25,6 +25,7 @@ public class CourseBuilder {
 		entity.setName(request.getName());
 		entity.setDescription(request.getDescription());
 		entity.setCategories(categories);
+		entity.setUpdateDate(LocalDateTime.now());
 		return entity;
 	}
 	
@@ -35,7 +36,7 @@ public class CourseBuilder {
 		response.setDescription(entity.getDescription());
 		response.setCreateDate(entity.getCreateDate().toString());
 		response.setUpdateDate(entity.getUpdateDate().toString());
-		response.setCategoriesId(CategoryBuilder.to(entity.getCategories()));
+		response.setCatgories(CategoryBuilder.toName(entity.getCategories()));
 		return response;
 	}
 

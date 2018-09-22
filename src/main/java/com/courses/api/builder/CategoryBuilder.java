@@ -18,6 +18,12 @@ public class CategoryBuilder {
 		return entity;
 	}
 	
+	public static CategoryEntity buildUpdateRequest(CategoryRequest request, CategoryEntity entity) {
+		entity.setName(request.getName());
+		entity.setUpdateDate(LocalDateTime.now());
+		return entity;
+	}
+	
 	public static CategoryResponse buildResponse (CategoryEntity entity) {
 		CategoryResponse response = new CategoryResponse();
 		response.setId(entity.getId());
@@ -32,8 +38,19 @@ public class CategoryBuilder {
 		if (entity.isEmpty() || entity == null)
 			return list;
 		
-		entity.forEach(course -> {
-			list.add(buildResponse(course));
+		entity.forEach(category -> {
+			list.add(buildResponse(category));
+		});
+		return list;
+	}
+	
+	public static List<String> toName(List<CategoryEntity> list2) {
+		List<String> list = new ArrayList<>();
+		if (list2.isEmpty() || list2 == null)
+			return list;
+
+		list2.forEach(category -> {
+			list.add(category.getName());
 		});
 		return list;
 	}

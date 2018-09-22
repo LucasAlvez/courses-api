@@ -1,11 +1,14 @@
 package com.courses.api.controller;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -35,5 +38,27 @@ public class CategoryController extends Controller {
 		verifyInvalidParam(result);
 		return categoryService.create(request);
 	}
-
+	
+	@ApiOperation(value = "Atualiza dados da categoria")
+	@RequestMapping(value = "/{categoryId}", method = RequestMethod.PUT)
+	@ResponseStatus(value = HttpStatus.OK)
+	public CategoryResponse update(@RequestBody @Valid CategoryRequest request, @PathVariable("categoryId") @Valid Long categoryId,
+			BindingResult result) throws Exception {
+		verifyInvalidParam(result);
+		return categoryService.update(request, categoryId);
+	}
+	
+	@ApiOperation(value = "Lista todas as categorias")
+	@RequestMapping(method = RequestMethod.GET)
+	@ResponseStatus(HttpStatus.OK)
+	public List<CategoryResponse> listAll(){
+		return categoryService.listAll();
+	}
+	
+	@ApiOperation(value = "Deleta uma categoria")
+	@RequestMapping(value = "/{categoryId}", method = RequestMethod.DELETE)
+	@ResponseStatus(HttpStatus.OK)
+	public void delete(@PathVariable Long categoryId){
+		categoryService.delete(categoryId);
+	}
 }
