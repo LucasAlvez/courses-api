@@ -44,12 +44,12 @@ public class CategoryBuilder {
 		return list;
 	}
 	
-	public static List<String> toName(List<CategoryEntity> list2) {
+	public static List<String> toName(List<CategoryEntity> entity) {
 		List<String> list = new ArrayList<>();
-		if (list2.isEmpty() || list2 == null)
+		if (entity.isEmpty() || entity == null)
 			return list;
 
-		list2.forEach(category -> {
+		entity.forEach(category -> {
 			list.add(category.getName());
 		});
 		return list;

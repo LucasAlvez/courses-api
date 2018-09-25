@@ -29,7 +29,7 @@ public class CourseService {
 
 	public CourseResponse create(CourseRequest request) throws ResourceNotFoundException, Exception {
 
-		List<CategoryEntity> categories = categoryRepository.findAllById(request.getCategoriesId());
+		List<CategoryEntity> categories = categoryRepository.findAllById(request.getCategories());
 		CourseEntity course = CourseBuilder.buildRequest(request, categories);
 		CourseEntity newCourse = courseRepository.save(course);
 		return CourseBuilder.buildResponse(newCourse);
@@ -38,7 +38,7 @@ public class CourseService {
 	public CourseResponse update(CourseRequest request, Long courseId) throws Exception, ResourceNotFoundException {
 
 		CourseEntity courseById = getCourseById(courseId);
-		List<CategoryEntity> categories = categoryRepository.findAllById(request.getCategoriesId());
+		List<CategoryEntity> categories = categoryRepository.findAllById(request.getCategories());
 
 		CourseEntity course = CourseBuilder.buildUpdateRequest(request, courseById, categories);
 		CourseEntity newCourse = courseRepository.save(course);

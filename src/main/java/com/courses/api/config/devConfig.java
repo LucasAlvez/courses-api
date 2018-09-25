@@ -10,6 +10,9 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
+import com.courses.api.service.EmailService;
+import com.courses.api.service.SmtpEmailService;
+
 @Configuration
 @Profile("dev")
 public class devConfig {
@@ -40,6 +43,11 @@ public class devConfig {
 	@Bean
 	public static PropertySourcesPlaceholderConfigurer placeHolderConfigurer() {
 		return new PropertySourcesPlaceholderConfigurer();
+	}
+	
+	@Bean
+	public EmailService emailService () {
+		return new SmtpEmailService();
 	}
 
 }

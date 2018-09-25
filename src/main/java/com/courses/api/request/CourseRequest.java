@@ -24,7 +24,7 @@ public class CourseRequest {
 	private Integer duration;
 	
 	@NotEmpty(message = REQUIRED_CATEGORY)
-	private List<Long> categoriesId;
+	private List<Long> categories;
 	
 	public String getName() {
 		return name;
@@ -50,11 +50,11 @@ public class CourseRequest {
 		this.duration = duration;
 	}
 
-	public List<Long> getCategoriesId() {
-		return categoriesId;
+	public List<Long> getCategories() {
+		return categories;
 	}
 	
-	public void setCategoriesId(List<Long> categoriesId) {
-		this.categoriesId = categoriesId;
+	public void setCategories(List<Long> categories) {
+		this.categories = categories;
 	}
 }

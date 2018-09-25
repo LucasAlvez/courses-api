@@ -23,7 +23,6 @@ public class CategoryService {
 		
 		CategoryEntity category = CategoryBuilder.buildRequest(request);
 		CategoryEntity newCategory = categoryRepository.save(category);
-		
 		return CategoryBuilder.buildResponse(newCategory);
 	}
 	
