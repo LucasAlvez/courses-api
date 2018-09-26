@@ -1,10 +1,12 @@
 package com.courses.api.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
@@ -13,6 +15,8 @@ import org.springframework.stereotype.Service;
 import com.courses.api.builder.CourseBuilder;
 import com.courses.api.entity.CategoryEntity;
 import com.courses.api.entity.CourseEntity;
+import com.courses.api.enums.CourseSort;
+import com.courses.api.enums.SortOrder;
 import com.courses.api.repository.CategoryRepository;
 import com.courses.api.repository.CourseRepository;
 import com.courses.api.request.CourseRequest;
@@ -32,6 +36,7 @@ public class CourseService {
 		List<CategoryEntity> categories = categoryRepository.findAllById(request.getCategories());
 		CourseEntity course = CourseBuilder.buildRequest(request, categories);
 		CourseEntity newCourse = courseRepository.save(course);
+		
 		return CourseBuilder.buildResponse(newCourse);
 	}
 
@@ -44,20 +49,31 @@ public class CourseService {
 		CourseEntity newCourse = courseRepository.save(course);
 		return CourseBuilder.buildResponse(newCourse);
 	}
+	
+	public Page<CourseResponse> listAll (Integer page, Integer size, CourseSort sortBy, SortOrder sortOrder) {
+		PageRequest pageRequest = null;
+		
+		if (SortOrder.ASC.equals(sortOrder)) {
+			pageRequest =  PageRequest.of(page, size, Direction.ASC, sortBy.toString());
+		}
+		
+		if (SortOrder.DESC.equals(sortOrder)) {
+			pageRequest =  PageRequest.of(page, size, Direction.DESC, sortBy.toString());
+		}
+		
+		Page<CourseEntity> courses = courseRepository.findAll(pageRequest);
 
-	public List<CourseResponse> listAll() {
-		List<CourseEntity> course = courseRepository.findAll();
-		return CourseBuilder.to(course);
+		List<CourseResponse> coursesResponse = new ArrayList<>();
+		for (CourseEntity c : courses) {
+			coursesResponse.add(CourseBuilder.buildResponse(c));
+		}
+		
+		return new PageImpl<>(coursesResponse, pageRequest, courseRepository.findAll(pageRequest).getSize());
 	}
-
+	
 	public void delete(Long courseId) throws ResourceNotFoundException {
 		CourseEntity course = getCourseById(courseId);
 		courseRepository.delete(course);
-	}
-	
-	public Page<CourseEntity> listAll (Integer page, Integer size, String sortBy, String sortOrder) {
-		PageRequest pageRequest = PageRequest.of(page, size, Direction.valueOf(sortOrder), sortBy);
-		return courseRepository.findAll(pageRequest);
 	}
 
 	private CourseEntity getCourseById(Long courseId) throws ResourceNotFoundException {

@@ -1,7 +1,7 @@
 package com.courses.api.validations;
 
 public class BeanValidation {
-
+	
     public static final String REQUIRED_NAME                     = "Nome deve ser informado";
     public static final String REQUIRED_PASS                     = "Senha deve ser informado";
     public static final String REQUIRED_EMAIL					 = "E-mail deve ser informado";

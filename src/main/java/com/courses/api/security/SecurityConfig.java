@@ -26,6 +26,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	private JWTUtil jwtUtil;
 
 	public static final String[] PUBLIC_MATCHERS = {
+			"/",
 			"/v2/api-docs", 
 			"/swagger-resources", 
 			"/swagger-resources/**",

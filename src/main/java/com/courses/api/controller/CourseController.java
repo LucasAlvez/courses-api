@@ -15,7 +15,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.courses.api.entity.CourseEntity;
+import com.courses.api.enums.CourseSort;
+import com.courses.api.enums.SortOrder;
 import com.courses.api.request.CourseRequest;
 import com.courses.api.response.CourseResponse;
 import com.courses.api.service.CourseService;
@@ -52,11 +53,11 @@ public class CourseController extends Controller {
 	@ApiOperation(value = "Retorna todos os cursos")
 	@RequestMapping(method = RequestMethod.GET)
 	@ResponseStatus(value = HttpStatus.OK)
-	public Page<CourseEntity> listAll(
+	public Page<CourseResponse> listAll(
 			@RequestParam(value = "page", defaultValue = "0") Integer page, 
 			@RequestParam(value = "size", defaultValue = "24") Integer size, 
-			@RequestParam(value = "sortBy", defaultValue = "name") String sortBy, 
-			@RequestParam(value = "sortOrder", defaultValue = "ASC") String sortOrder) throws Exception {
+			@RequestParam(value = "sortBy", defaultValue = "id") CourseSort sortBy, 
+			@RequestParam(value = "sortOrder", defaultValue = "DESC") SortOrder sortOrder) throws Exception {
 		return courseService.listAll(page, size, sortBy, sortOrder);
 	}
 	
