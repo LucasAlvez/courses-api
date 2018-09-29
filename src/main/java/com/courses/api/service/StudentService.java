@@ -4,17 +4,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.courses.api.builder.UserBuilder;
-import com.courses.api.entity.UserEntity;
-import com.courses.api.repository.UserRepository;
-import com.courses.api.request.UserRequest;
-import com.courses.api.response.UserResponse;
+import com.courses.api.builder.StudentBuilder;
+import com.courses.api.entity.StudentEntity;
+import com.courses.api.repository.StudentRepository;
+import com.courses.api.request.StudentRequest;
+import com.courses.api.response.StudentResponse;
 
 @Service
-public class UserService {
+public class StudentService {
 	
 	@Autowired
-	UserRepository userRepository;
+	StudentRepository studentRepository;
 	
 	@Autowired
 	EmailService emailService;
@@ -22,14 +22,16 @@ public class UserService {
 	@Autowired
 	BCryptPasswordEncoder criptPass;
 	
-	public UserResponse create (UserRequest request) {
+	public StudentResponse create (StudentRequest request) {
+		
 		request.setPass(criptPass.encode(request.getPass()));
-		UserEntity user = UserBuilder.buildRequest(request);
-		UserEntity newUser = userRepository.save(user);
 		
-		emailService.confirmationOfRegistration(newUser);
 		
-		return UserBuilder.buildResponse(newUser);
+		StudentEntity student = StudentBuilder.buildRequest(request);
+		StudentEntity newStudent = studentRepository.save(student);
+		
+		emailService.confirmationOfRegistration(newStudent);
+		
+		return StudentBuilder.buildResponse(newStudent);
 	}
-
 }

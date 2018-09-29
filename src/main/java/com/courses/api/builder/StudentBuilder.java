@@ -1,55 +1,45 @@
 package com.courses.api.builder;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.courses.api.entity.UserEntity;
-import com.courses.api.enums.UserType;
-import com.courses.api.request.UserRequest;
-import com.courses.api.request.UserUpdateRequest;
-import com.courses.api.response.UserResponse;
+import com.courses.api.entity.StudentEntity;
+import com.courses.api.enums.Roles;
+import com.courses.api.request.StudentRequest;
+import com.courses.api.request.StudentUpdateRequest;
+import com.courses.api.response.StudentResponse;
 
-public class UserBuilder {
-	
-	public static UserEntity buildRequest(UserRequest request) {
-		UserEntity entity = new UserEntity();
-		entity.setName(request.getName());
+public class StudentBuilder {
+
+	public static StudentEntity buildRequest(StudentRequest request) {
+		StudentEntity entity = new StudentEntity();
 		entity.setEmail(request.getEmail());
 		entity.setPass(request.getPass());
-		entity.setType(UserType.STUDENT.name());
-		entity.setCreateDate(LocalDateTime.now());
-		entity.setUpdateDate(LocalDateTime.now());
+		entity.addRoles(Roles.ADMIN);
 		return entity;
 	}
 
-	public static UserEntity buildUpdateRequest(UserUpdateRequest request, UserEntity entity) {
-		entity.setName(request.getName());
+	public static StudentEntity buildUpdateRequest(StudentUpdateRequest request, StudentEntity entity) {
 		entity.setEmail(request.getEmail());
 		entity.setPass(request.getPass());
-		entity.setType(request.getType());
-		entity.setUpdateDate(LocalDateTime.now());
 		return entity;
 	}
 
-	public static UserResponse buildResponse(UserEntity entity) {
-		UserResponse response = new UserResponse();
+	public static StudentResponse buildResponse(StudentEntity entity) {
+		StudentResponse response = new StudentResponse();
 		response.setId(entity.getId());
-		response.setName(entity.getName());
 		response.setEmail(entity.getEmail());
-		response.setType(entity.getType());
-		response.setCreateDate(entity.getCreateDate().toString());
-		response.setUpdateDate(entity.getUpdateDate().toString());
+		response.setRoles(entity.getRoles().toString());
 		return response;
 	}
 
-	public static List<UserResponse> to(List<UserEntity> entity) {
-		List<UserResponse> list = new ArrayList<>();
+	public static List<StudentResponse> to(List<StudentEntity> entity) {
+		List<StudentResponse> list = new ArrayList<>();
 		if (entity.isEmpty() || entity == null)
 			return list;
 
-		entity.forEach(user -> {
-			list.add(buildResponse(user));
+		entity.forEach(student -> {
+			list.add(buildResponse(student));
 		});
 		return list;
 	}
