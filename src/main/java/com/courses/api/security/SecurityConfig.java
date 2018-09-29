@@ -34,14 +34,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			"/configuration/security", 
 			"/swagger-ui.html", 
 			"/webjars/**", 
-			"/v1/users/**",
-			"/v1/roles/**"
+			
+			
+			"/v1/students/**", 
+			"/v1/categories/**",
+			"/v1/courses/**",
+			"/v1/admin/**/**"
 
 };
 
 	public static final String[] PUBLIC_MATCHERS_GET = { 
-			"/v1/courses/**", 
-			"/v1/categories/**"
 };
 
 	@Override
@@ -52,6 +54,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		.antMatchers(PUBLIC_MATCHERS).permitAll()
 		.antMatchers("/**").authenticated();
 		http.addFilter(new JWTAuthenticationFilter(authenticationManager(), jwtUtil));
+		http.addFilter(new JWTAuthorizationFilter(authenticationManager(), jwtUtil,userDetailsService));
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 	}
 
