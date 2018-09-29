@@ -25,7 +25,7 @@ public class devConfig {
 
 	@Value("${spring.datasource.password}")
 	private String password;
-	
+
 	@Value("${spring.datasource.driverClassName}")
 	private String driverClassName;
 
@@ -44,9 +44,9 @@ public class devConfig {
 	public static PropertySourcesPlaceholderConfigurer placeHolderConfigurer() {
 		return new PropertySourcesPlaceholderConfigurer();
 	}
-	
+
 	@Bean
-	public EmailService emailService () {
+	public EmailService emailService() {
 		return new SmtpEmailService();
 	}
 
