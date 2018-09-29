@@ -63,6 +63,7 @@ public class CourseService {
 		
 		Page<CourseEntity> courses = courseRepository.findAll(pageRequest);
 
+
 		List<CourseResponse> coursesResponse = new ArrayList<>();
 		for (CourseEntity c : courses) {
 			coursesResponse.add(CourseBuilder.buildResponse(c));

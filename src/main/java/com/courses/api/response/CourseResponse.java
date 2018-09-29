@@ -9,12 +9,12 @@ public class CourseResponse {
 	private String name;
 
 	private String description;
-	
+
 	private String createDate;
-	
+
 	private String updateDate;
-	
-	private List<String> catgories;
+
+	private List<CategoryResponse> categories;
 
 	public Long getId() {
 		return id;
@@ -43,24 +43,24 @@ public class CourseResponse {
 	public String getCreateDate() {
 		return createDate;
 	}
-	
+
 	public void setCreateDate(String createDate) {
 		this.createDate = createDate;
 	}
-	
+
 	public String getUpdateDate() {
 		return updateDate;
 	}
-	
+
 	public void setUpdateDate(String updateDate) {
 		this.updateDate = updateDate;
 	}
-	
-	public List<String> getCatgories() {
-		return catgories;
+
+	public List<CategoryResponse> getCategories() {
+		return categories;
 	}
-	
-	public void setCatgories(List<String> catgories) {
-		this.catgories = catgories;
+
+	public void setCategories(List<CategoryResponse> categories) {
+		this.categories = categories;
 	}
 }

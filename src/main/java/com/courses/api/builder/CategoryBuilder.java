@@ -9,22 +9,22 @@ import com.courses.api.request.CategoryRequest;
 import com.courses.api.response.CategoryResponse;
 
 public class CategoryBuilder {
-	
-	public static CategoryEntity buildRequest (CategoryRequest request) {
+
+	public static CategoryEntity buildRequest(CategoryRequest request) {
 		CategoryEntity entity = new CategoryEntity();
 		entity.setName(request.getName());
 		entity.setCreateDate(LocalDateTime.now());
 		entity.setUpdateDate(LocalDateTime.now());
 		return entity;
 	}
-	
+
 	public static CategoryEntity buildUpdateRequest(CategoryRequest request, CategoryEntity entity) {
 		entity.setName(request.getName());
 		entity.setUpdateDate(LocalDateTime.now());
 		return entity;
 	}
-	
-	public static CategoryResponse buildResponse (CategoryEntity entity) {
+
+	public static CategoryResponse buildResponse(CategoryEntity entity) {
 		CategoryResponse response = new CategoryResponse();
 		response.setId(entity.getId());
 		response.setName(entity.getName());
@@ -32,18 +32,18 @@ public class CategoryBuilder {
 		response.setUpdateDate(entity.getUpdateDate().toString());
 		return response;
 	}
-	
-	public static List<CategoryResponse> to (List<CategoryEntity> entity) {
+
+	public static List<CategoryResponse> to(List<CategoryEntity> entity) {
 		List<CategoryResponse> list = new ArrayList<>();
 		if (entity.isEmpty() || entity == null)
 			return list;
-		
+
 		entity.forEach(category -> {
 			list.add(buildResponse(category));
 		});
 		return list;
 	}
-	
+
 	public static List<String> toName(List<CategoryEntity> entity) {
 		List<String> list = new ArrayList<>();
 		if (entity.isEmpty() || entity == null)
