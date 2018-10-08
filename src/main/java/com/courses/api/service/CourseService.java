@@ -36,7 +36,7 @@ public class CourseService {
 		List<CategoryEntity> categories = categoryRepository.findAllById(request.getCategories());
 		CourseEntity course = CourseBuilder.buildRequest(request, categories);
 		CourseEntity newCourse = courseRepository.save(course);
-		
+
 		return CourseBuilder.buildResponse(newCourse);
 	}
 
@@ -49,29 +49,33 @@ public class CourseService {
 		CourseEntity newCourse = courseRepository.save(course);
 		return CourseBuilder.buildResponse(newCourse);
 	}
-	
-	public Page<CourseResponse> listAll (Integer page, Integer size, CourseSort sortBy, SortOrder sortOrder) {
-		PageRequest pageRequest = null;
-		
-		if (SortOrder.ASC.equals(sortOrder)) {
-			pageRequest =  PageRequest.of(page, size, Direction.ASC, sortBy.toString());
-		}
-		
-		if (SortOrder.DESC.equals(sortOrder)) {
-			pageRequest =  PageRequest.of(page, size, Direction.DESC, sortBy.toString());
-		}
-		
-		Page<CourseEntity> courses = courseRepository.findAll(pageRequest);
 
+	public CourseResponse findById(Long courseId) {
+		CourseEntity course = getCourseById(courseId);
+		return CourseBuilder.buildResponse(course);
+	}
+
+	public Page<CourseResponse> listAll(Integer page, Integer size, CourseSort sortBy, SortOrder sortOrder) {
+		PageRequest pageRequest = null;
+
+		if (SortOrder.ASC.equals(sortOrder)) {
+			pageRequest = PageRequest.of(page, size, Direction.ASC, sortBy.toString());
+		}
+
+		if (SortOrder.DESC.equals(sortOrder)) {
+			pageRequest = PageRequest.of(page, size, Direction.DESC, sortBy.toString());
+		}
+
+		Page<CourseEntity> courses = courseRepository.findAll(pageRequest);
 
 		List<CourseResponse> coursesResponse = new ArrayList<>();
 		for (CourseEntity c : courses) {
 			coursesResponse.add(CourseBuilder.buildResponse(c));
 		}
-		
+
 		return new PageImpl<>(coursesResponse, pageRequest, courseRepository.findAll(pageRequest).getSize());
 	}
-	
+
 	public void delete(Long courseId) throws ResourceNotFoundException {
 		CourseEntity course = getCourseById(courseId);
 		courseRepository.delete(course);

@@ -15,17 +15,17 @@ import com.courses.api.response.CategoryResponse;
 
 @Service
 public class CategoryService {
-	
+
 	@Autowired
 	CategoryRepository categoryRepository;
-	
-	public CategoryResponse create (CategoryRequest request) {
-		
+
+	public CategoryResponse create(CategoryRequest request) {
+
 		CategoryEntity category = CategoryBuilder.buildRequest(request);
 		CategoryEntity newCategory = categoryRepository.save(category);
 		return CategoryBuilder.buildResponse(newCategory);
 	}
-	
+
 	public CategoryResponse update(CategoryRequest request, Long categoryId)
 			throws Exception, ResourceNotFoundException {
 
@@ -35,17 +35,22 @@ public class CategoryService {
 		CategoryEntity newCategory = categoryRepository.save(category);
 		return CategoryBuilder.buildResponse(newCategory);
 	}
-	
+
+	public CategoryResponse findById(Long categoryId) {
+		CategoryEntity category = getCategoryByid(categoryId);
+		return CategoryBuilder.buildResponse(category);
+	}
+
 	public List<CategoryResponse> listAll() {
 		List<CategoryEntity> categories = categoryRepository.findAll();
 		return CategoryBuilder.to(categories);
 	}
-	
-	public void delete (Long categoryId) {
+
+	public void delete(Long categoryId) {
 		CategoryEntity category = getCategoryByid(categoryId);
 		categoryRepository.delete(category);
 	}
-	
+
 	private CategoryEntity getCategoryByid(Long categoryId) throws ResourceNotFoundException {
 		Optional<CategoryEntity> category = categoryRepository.findById(categoryId);
 		category.orElseThrow(() -> new ResourceNotFoundException("Categoria não encontrado"));

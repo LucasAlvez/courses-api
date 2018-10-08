@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.courses.api.entity.StudentEntity;
-import com.courses.api.enums.Roles;
 import com.courses.api.request.StudentRequest;
 import com.courses.api.request.StudentUpdateRequest;
 import com.courses.api.response.StudentResponse;
@@ -13,23 +12,19 @@ public class StudentBuilder {
 
 	public static StudentEntity buildRequest(StudentRequest request) {
 		StudentEntity entity = new StudentEntity();
-		entity.setEmail(request.getEmail());
-		entity.setPass(request.getPass());
-		entity.addRoles(Roles.ADMIN);
+		entity.setName(request.getName());;
 		return entity;
 	}
 
 	public static StudentEntity buildUpdateRequest(StudentUpdateRequest request, StudentEntity entity) {
-		entity.setEmail(request.getEmail());
-		entity.setPass(request.getPass());
+		entity.setName(request.getName());
 		return entity;
 	}
 
 	public static StudentResponse buildResponse(StudentEntity entity) {
 		StudentResponse response = new StudentResponse();
 		response.setId(entity.getId());
-		response.setEmail(entity.getEmail());
-		response.setRoles(entity.getRoles().toString());
+		response.setName(entity.getName());
 		return response;
 	}
 

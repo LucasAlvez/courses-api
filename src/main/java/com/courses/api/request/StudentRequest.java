@@ -1,32 +1,19 @@
 package com.courses.api.request;
 
-import static com.courses.api.validations.BeanValidation.REQUIRED_EMAIL;
-import static com.courses.api.validations.BeanValidation.REQUIRED_PASS;
+import static com.courses.api.validations.BeanValidation.REQUIRED_NAME;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
 public class StudentRequest {
 
-	@NotBlank(message = REQUIRED_EMAIL)
-	private String email;
-
-	@NotNull(message = REQUIRED_PASS)
-	private String pass;;
-
-	public String getEmail() {
-		return email;
+	@NotBlank(message = REQUIRED_NAME)
+	private String name;
+	
+	public String getName() {
+		return name;
 	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public String getPass() {
-		return pass;
-	}
-
-	public void setPass(String pass) {
-		this.pass = pass;
+	
+	public void setName(String name) {
+		this.name = name;
 	}
 }

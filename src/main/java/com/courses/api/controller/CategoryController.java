@@ -2,6 +2,8 @@ package com.courses.api.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,17 +22,17 @@ import io.swagger.annotations.ApiOperation;
 @Api(tags = "categories", description = "Categorias")
 @RequestMapping(value = "/v1/categories")
 public class CategoryController extends Controller {
-	
+
 	@Autowired
 	CategoryService categoryService;
-	
-	@ApiOperation(value = "Deleta uma categoria")
-	@RequestMapping(value = "/{categoryId}", method = RequestMethod.DELETE)
+
+	@ApiOperation(value = "Busca categoria pelo seu id")
+	@RequestMapping(value = "/{categoryId}", method = RequestMethod.GET)
 	@ResponseStatus(HttpStatus.OK)
-	public void delete(@PathVariable Long categoryId){
-		categoryService.delete(categoryId);
+	public CategoryResponse findById(@PathVariable("categoryId") @Valid Long categoryId) throws Exception {
+		return categoryService.findById(categoryId);
 	}
-	
+
 	@ApiOperation(value = "Lista todas as categorias")
 	@RequestMapping(method = RequestMethod.GET)
 	@ResponseStatus(HttpStatus.OK)

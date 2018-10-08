@@ -1,11 +1,11 @@
-package com.courses.api.service;
+package com.courses.api.service.email;
 
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 
-import com.courses.api.entity.StudentEntity;
+import com.courses.api.entity.UserEntity;
 
 public abstract class AbstractEmailService implements EmailService {
 		
@@ -13,19 +13,19 @@ public abstract class AbstractEmailService implements EmailService {
 	private String sender;
 
 	@Override
-	public void confirmationOfRegistration (StudentEntity student) {
-		SimpleMailMessage sm = prepareSimpleMailMessage(student);
+	public void confirmationOfRegistration (UserEntity user) {
+		SimpleMailMessage sm = prepareSimpleMailMessage(user);
 		sendEmail(sm);
 	}
 
-	protected SimpleMailMessage prepareSimpleMailMessage(StudentEntity student) {
+	protected SimpleMailMessage prepareSimpleMailMessage(UserEntity user) {
 		SimpleMailMessage sm = new SimpleMailMessage();
-		sm.setTo("luucasalves.p@gmail.com");
+		sm.setTo(user.getEmail());
 		sm.setFrom(sender);
 		sm.setSubject("Confirmação de cadastro");
 		sm.setSentDate(new Date(System.currentTimeMillis()));
-		sm.setText("Olá, " + student.getEmail() + "\n" +
-					"sua conta com o e-mail " + student.getEmail() + " foi criada com sucesso!");
+		sm.setText("Olá, " + user.getName() + "\n" +
+					"sua conta com o e-mail " + user.getEmail() + " foi criada com sucesso!");
 		return sm;
 	}
 }

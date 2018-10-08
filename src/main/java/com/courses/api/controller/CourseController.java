@@ -37,7 +37,14 @@ public class CourseController extends Controller {
 		return courseService.create(request);
 	}
 	
-	@ApiOperation(value = "Atuzaliza um um curso")
+	@ApiOperation(value = "Busca aluno pelo seu id")
+	@RequestMapping(value = "/{courseId}", method = RequestMethod.GET)
+	@ResponseStatus(HttpStatus.OK)
+	public CourseResponse findById(@PathVariable("courseId") @Valid Long courseId) throws Exception {
+		return courseService.findById(courseId);
+	}
+	
+	@ApiOperation(value = "Atuzaliza um curso")
 	@RequestMapping(value = "/{courseId}", method = RequestMethod.PUT)
 	@ResponseStatus(value = HttpStatus.OK)
 	public CourseResponse update(@RequestBody @Valid CourseRequest request, @PathVariable("courseId") @Valid Long courseId,
@@ -49,7 +56,7 @@ public class CourseController extends Controller {
 	@ApiOperation(value = "Deleta um curso")
 	@RequestMapping(value = "/{courseId}", method = RequestMethod.DELETE)
 	@ResponseStatus(HttpStatus.OK)
-	public void delete(@PathVariable Long courseId) throws Exception {
+	public void delete( @PathVariable("courseId") @Valid Long courseId) throws Exception {
 		courseService.delete(courseId);
 	}
 }

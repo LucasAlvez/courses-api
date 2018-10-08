@@ -10,8 +10,8 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
-import com.courses.api.service.EmailService;
-import com.courses.api.service.SmtpEmailService;
+import com.courses.api.service.email.EmailService;
+import com.courses.api.service.email.SmtpEmailService;
 
 @Configuration
 @Profile("dev")

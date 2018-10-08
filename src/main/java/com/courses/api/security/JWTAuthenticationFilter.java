@@ -60,9 +60,17 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         String token = jwtUtil.generateToken(username);
         res.addHeader("Authorization", "Bearer " + token);
         res.addHeader("access-control-expose-headers", "Authorization");
-        
-        System.out.println("Bearer " + token);
+        res.getWriter().append(json(token));        
 	}
+	
+	  private String json(String token) {
+          long date = new Date().getTime();
+          return "{\"timestamp\": " + date + ", "
+        	  + "\n"
+              + "\"token\": " 
+        	  + "\n" 
+              + "Bearer " + token + "\n" ;
+      }
 	
 	private class JWTAuthenticationFailureHandler implements AuthenticationFailureHandler {
 		 
@@ -82,5 +90,6 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 + "\"message\": \"Email ou senha inválidos\", "
                 + "\"path\": \"/login\"}";
         }
+        
     }
 }

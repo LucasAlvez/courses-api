@@ -6,24 +6,22 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.courses.api.entity.StudentEntity;
 import com.courses.api.entity.UserEntity;
-import com.courses.api.repository.StudentRepository;
+import com.courses.api.repository.UserRepository;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 	
 	@Autowired
-	StudentRepository studentRepository;
+	UserRepository userRepository;
 	
 	@Override
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-		StudentEntity student = studentRepository.findByEmail(email);
+		UserEntity user = userRepository.findByEmail(email);
 		
-		if(student == null){
+		if(user == null){
 			throw new UsernameNotFoundException("Usuario não encontrado!");
 		}
-		return new UserEntity(student.getId(), student.getEmail(), student.getPass(), student.getRoles());
+		return new UserEntity(user.getId(), user.getName(), user.getEmail(), user.getPass(), user.getRoles());
 	}
-
 }

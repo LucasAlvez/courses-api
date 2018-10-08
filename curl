@@ -1,4 +1,4 @@
 curl -X POST -H "X-Requested-With: XMLHttpRequest" -H "Content-Type: application/json" -H "Cache-Control: no-cache" -d '{  
-    "email": "lucas@live.com",
+    "email": "luucasalves.p@gmail.com",
     "pass": "123"
 }' "http://localhost:8080/login"
