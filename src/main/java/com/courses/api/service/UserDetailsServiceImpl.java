@@ -22,6 +22,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 		if(user == null){
 			throw new UsernameNotFoundException("Usuario não encontrado!");
 		}
-		return new UserEntity(user.getId(), user.getName(), user.getEmail(), user.getPass(), user.getRoles());
+		return new UserEntity(user.getId(), user.getName(), user.getEmail(), user.getPass(), user.getRoles(), user.getAccount());
 	}
 }

@@ -3,6 +3,7 @@ package com.courses.api.builder;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import com.courses.api.entity.CategoryEntity;
 import com.courses.api.request.CategoryRequest;
@@ -33,24 +34,13 @@ public class CategoryBuilder {
 		return response;
 	}
 
-	public static List<CategoryResponse> to(List<CategoryEntity> entity) {
+	public static List<CategoryResponse> to(List<CategoryEntity> categories) {
 		List<CategoryResponse> list = new ArrayList<>();
-		if (entity.isEmpty() || entity == null)
+		if (categories.isEmpty() || categories == null)
 			return list;
 
-		entity.forEach(category -> {
+		categories.forEach(category -> {
 			list.add(buildResponse(category));
-		});
-		return list;
-	}
-
-	public static List<String> toName(List<CategoryEntity> entity) {
-		List<String> list = new ArrayList<>();
-		if (entity.isEmpty() || entity == null)
-			return list;
-
-		entity.forEach(category -> {
-			list.add(category.getName());
 		});
 		return list;
 	}

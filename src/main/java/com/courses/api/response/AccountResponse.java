@@ -1,25 +1,21 @@
 package com.courses.api.response;
 
-import java.util.Set;
-
-public class UserResponse {
+public class AccountResponse {
 	
 	private Long id;
 	
 	private String name;
-
+	
 	private String email;
-
-	private Set<RoleResponse> roles;
 	
 	private String createDate;
 	
 	private String updateDate;
-
+		
 	public Long getId() {
 		return id;
 	}
-
+	
 	public void setId(Long id) {
 		this.id = id;
 	}
@@ -38,14 +34,6 @@ public class UserResponse {
 
 	public void setEmail(String email) {
 		this.email = email;
-	}
-
-	public Set<RoleResponse> getRoles() {
-		return roles;
-	}
-	
-	public void setRoles(Set<RoleResponse> roles) {
-		this.roles = roles;
 	}
 	
 	public String getCreateDate() {

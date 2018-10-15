@@ -6,10 +6,14 @@ import java.util.List;
 
 import javax.persistence.Convert;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters.LocalDateTimeConverter;
@@ -28,17 +32,25 @@ public class CourseEntity implements Serializable {
 
 	private String description;
 
-	private String duration;
+	private Integer duration;
 
 	@Convert(converter = LocalDateTimeConverter.class)
 	private LocalDateTime createDate;
 
 	@Convert(converter = LocalDateTimeConverter.class)
 	private LocalDateTime updateDate;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "account_id")
+	private AccountEntity account;
 
 	@ManyToMany
+	@JoinTable(name = "courses_categories", joinColumns = { @JoinColumn(name = "course_id") }, inverseJoinColumns = { @JoinColumn(name = "category_id") })
 	private List<CategoryEntity> categories;
-
+	
+	@ManyToMany(mappedBy = "courses")
+	private List<StudentEntity> students;
+	
 	public Long getId() {
 		return id;
 	}
@@ -55,11 +67,11 @@ public class CourseEntity implements Serializable {
 		this.name = name;
 	}
 
-	public String getDuration() {
+	public Integer getDuration() {
 		return duration;
 	}
-
-	public void setDuration(String duration) {
+	
+	public void setDuration(Integer duration) {
 		this.duration = duration;
 	}
 
@@ -90,8 +102,24 @@ public class CourseEntity implements Serializable {
 	public List<CategoryEntity> getCategories() {
 		return categories;
 	}
-
+	
 	public void setCategories(List<CategoryEntity> categories) {
 		this.categories = categories;
+	}
+	
+	public List<StudentEntity> getStudents() {
+		return students;
+	}
+	
+	public void setStudents(List<StudentEntity> students) {
+		this.students = students;
+	}
+
+	public AccountEntity getAccount() {
+		return account;
+	}
+	
+	public void setAccount(AccountEntity account) {
+		this.account = account;
 	}
 }

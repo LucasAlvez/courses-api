@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.courses.api.entity.AccountEntity;
 import com.courses.api.entity.CategoryEntity;
 import com.courses.api.entity.CourseEntity;
 import com.courses.api.request.CourseRequest;
@@ -11,13 +12,15 @@ import com.courses.api.response.CourseResponse;
 
 public class CourseBuilder {
 
-	public static CourseEntity buildRequest(CourseRequest request, List<CategoryEntity> categories) throws Exception {
+	public static CourseEntity buildRequest(CourseRequest request, List<CategoryEntity> categories,	 AccountEntity account) throws Exception {
 		CourseEntity entity = new CourseEntity();
 		entity.setName(request.getName());
 		entity.setDescription(request.getDescription());
+		entity.setDuration(request.getDuration());
 		entity.setCreateDate(LocalDateTime.now());
 		entity.setUpdateDate(LocalDateTime.now());
 		entity.setCategories(categories);
+		entity.setAccount(account);
 		return entity;
 	}
 
@@ -38,6 +41,7 @@ public class CourseBuilder {
 		response.setCreateDate(entity.getCreateDate().toString());
 		response.setUpdateDate(entity.getUpdateDate().toString());
 		response.setCategories(CategoryBuilder.to(entity.getCategories()));
+		response.setAccount(AccountBuilder.buildResponse(entity.getAccount()));
 		return response;
 	}
 

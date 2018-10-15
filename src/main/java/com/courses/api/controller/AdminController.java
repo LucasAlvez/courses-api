@@ -121,14 +121,6 @@ public class AdminController extends Controller {
 		categoryService.delete(categoryId);
 	}
 	
-	@ApiOperation(value = "Deleta um aluno")
-	@RequestMapping(value = "/students/{studentId}", method = RequestMethod.DELETE)
-	@ResponseStatus(HttpStatus.OK)
-	//@PreAuthorize(Permissions.ADMIN)
-	public void deleteStudent( @PathVariable("studentId") @Valid Long studentId) {
-		studentService.delete(studentId);
-	}
-	
 	@ApiOperation(value = "Deleta um usuário")
 	@RequestMapping(value = "/users/{userId}", method = RequestMethod.DELETE)
 	@ResponseStatus(HttpStatus.OK)

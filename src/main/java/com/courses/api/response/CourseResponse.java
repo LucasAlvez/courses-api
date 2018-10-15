@@ -15,6 +15,8 @@ public class CourseResponse {
 	private String updateDate;
 
 	private List<CategoryResponse> categories;
+	
+	private AccountResponse account;
 
 	public Long getId() {
 		return id;
@@ -62,5 +64,13 @@ public class CourseResponse {
 
 	public void setCategories(List<CategoryResponse> categories) {
 		this.categories = categories;
+	}
+	
+	public AccountResponse getAccount() {
+		return account;
+	}
+	
+	public void setAccount(AccountResponse account) {
+		this.account = account;
 	}
 }

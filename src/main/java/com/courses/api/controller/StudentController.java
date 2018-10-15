@@ -53,4 +53,11 @@ public class StudentController extends Controller {
 	public StudentResponse findById(@PathVariable("studentId") @Valid Long studentId) throws Exception {
 		return studentService.findById(studentId);
 	}
+	
+	@ApiOperation(value = "Deleta um aluno")
+	@RequestMapping(value = "/students/{studentId}", method = RequestMethod.DELETE)
+	@ResponseStatus(HttpStatus.OK)
+	public void deleteStudent( @PathVariable("studentId") @Valid Long studentId) {
+		studentService.delete(studentId);
+	}
 }

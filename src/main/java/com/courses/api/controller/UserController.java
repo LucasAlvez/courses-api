@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.courses.api.entity.UserEntity;
 import com.courses.api.request.UserRequest;
+import com.courses.api.response.AccountResponse;
 import com.courses.api.response.UserResponse;
 import com.courses.api.security.JWTUtil;
 import com.courses.api.service.UserService;
@@ -50,6 +51,13 @@ public class UserController extends Controller {
 	@ResponseStatus(HttpStatus.OK)
 	public UserResponse findById(@PathVariable("userId") @Valid Long userId) throws Exception {
 		return userService.findById(userId);
+	}
+	
+	@ApiOperation(value = "retorna usuário loagdo")
+	@RequestMapping(method = RequestMethod.GET)
+	@ResponseStatus(HttpStatus.OK)
+	public AccountResponse returnUserLogged() throws Exception {
+		return userService.returnUserLogged();
 	}
 	
 	@ApiOperation(value = "Atuzaliza Token")

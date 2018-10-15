@@ -13,8 +13,10 @@ import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.courses.api.builder.CourseBuilder;
+import com.courses.api.entity.AccountEntity;
 import com.courses.api.entity.CategoryEntity;
 import com.courses.api.entity.CourseEntity;
+import com.courses.api.entity.UserEntity;
 import com.courses.api.enums.CourseSort;
 import com.courses.api.enums.SortOrder;
 import com.courses.api.repository.CategoryRepository;
@@ -32,17 +34,29 @@ public class CourseService {
 	CategoryRepository categoryRepository;
 
 	public CourseResponse create(CourseRequest request) throws ResourceNotFoundException, Exception {
+		Optional<UserEntity> userLogged = Optional.ofNullable(UserService.getUserLogged());
+		userLogged.orElseThrow(() -> new Exception("Usuário não encontrado"));
+
+		AccountEntity account = userLogged.get().getAccount();
 
 		List<CategoryEntity> categories = categoryRepository.findAllById(request.getCategories());
-		CourseEntity course = CourseBuilder.buildRequest(request, categories);
+
+		CourseEntity course = CourseBuilder.buildRequest(request, categories, account);
 		CourseEntity newCourse = courseRepository.save(course);
 
 		return CourseBuilder.buildResponse(newCourse);
 	}
 
 	public CourseResponse update(CourseRequest request, Long courseId) throws Exception, ResourceNotFoundException {
+		Optional<UserEntity> userLogged = Optional.ofNullable(UserService.getUserLogged());
+		userLogged.orElseThrow(() -> new Exception("Usuário não encontrado"));
+
+		AccountEntity account = userLogged.get().getAccount();
 
 		CourseEntity courseById = getCourseById(courseId);
+
+		validateCourse(courseById, account);
+
 		List<CategoryEntity> categories = categoryRepository.findAllById(request.getCategories());
 
 		CourseEntity course = CourseBuilder.buildUpdateRequest(request, courseById, categories);
@@ -50,8 +64,16 @@ public class CourseService {
 		return CourseBuilder.buildResponse(newCourse);
 	}
 
-	public CourseResponse findById(Long courseId) {
+	public CourseResponse findById(Long courseId) throws Exception {
+		Optional<UserEntity> userLogged = Optional.ofNullable(UserService.getUserLogged());
+		userLogged.orElseThrow(() -> new Exception("Usuário não encontrado"));
+
+		AccountEntity account = userLogged.get().getAccount();
+
 		CourseEntity course = getCourseById(courseId);
+
+		validateCourse(course, account);
+
 		return CourseBuilder.buildResponse(course);
 	}
 
@@ -76,8 +98,27 @@ public class CourseService {
 		return new PageImpl<>(coursesResponse, pageRequest, courseRepository.findAll(pageRequest).getSize());
 	}
 
-	public void delete(Long courseId) throws ResourceNotFoundException {
+	public List<CourseResponse> listAllUserLogged() throws Exception {
+		Optional<UserEntity> userLogged = Optional.ofNullable(UserService.getUserLogged());
+		userLogged.orElseThrow(() -> new Exception("Usuário não encontrado"));
+
+		AccountEntity account = userLogged.get().getAccount();
+
+		List<CourseEntity> courses = courseRepository.findByAccount(account);
+
+		return CourseBuilder.to(courses);
+	}
+
+	public void delete(Long courseId) throws Exception {
+		Optional<UserEntity> userLogged = Optional.ofNullable(UserService.getUserLogged());
+		userLogged.orElseThrow(() -> new Exception("Usuário não encontrado"));
+
+		AccountEntity account = userLogged.get().getAccount();
+		
 		CourseEntity course = getCourseById(courseId);
+		
+		validateCourse(course, account);
+		
 		courseRepository.delete(course);
 	}
 
@@ -85,5 +126,11 @@ public class CourseService {
 		Optional<CourseEntity> course = courseRepository.findById(courseId);
 		course.orElseThrow(() -> new ResourceNotFoundException("Curso não encontrado"));
 		return course.get();
+	}
+
+	private void validateCourse(CourseEntity course, AccountEntity account) throws Exception {
+		if (course.getAccount().equals(account)) {
+			throw new Exception("Curso não pertence ao usuário");
+		}
 	}
 }

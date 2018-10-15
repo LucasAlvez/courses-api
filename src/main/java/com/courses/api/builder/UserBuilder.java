@@ -2,11 +2,15 @@ package com.courses.api.builder;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+import com.courses.api.entity.RoleEntity;
 import com.courses.api.entity.UserEntity;
 import com.courses.api.request.UserRequest;
 import com.courses.api.request.UserUpdateRequest;
+import com.courses.api.response.RoleResponse;
 import com.courses.api.response.UserResponse;
 
 public class UserBuilder {
@@ -19,6 +23,16 @@ public class UserBuilder {
 		entity.setCreateDate(LocalDateTime.now());
 		entity.setUpdateDate(LocalDateTime.now());
 		return entity;
+	}
+	
+	private static Set<RoleResponse> build(Set<RoleEntity> roles) {
+		Set<RoleResponse> responseRoles = new HashSet<>();
+		
+		roles.forEach(role -> {
+			responseRoles.add(new RoleResponse(role.getId(), role.getRole()));
+		});
+		
+		return responseRoles;
 	}
 
 	public static UserEntity buildUpdateRequest(UserUpdateRequest request, UserEntity entity) {
@@ -34,7 +48,7 @@ public class UserBuilder {
 		response.setId(entity.getId());
 		response.setName(entity.getName());
 		response.setEmail(entity.getEmail());
-		response.setRoles(entity.getRoles().toString());
+		response.setRoles(build(entity.getRoles()));
 		response.setCreateDate(entity.getCreateDate().toString());
 		response.setUpdateDate(entity.getUpdateDate().toString());
 		return response;

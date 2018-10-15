@@ -1,5 +1,7 @@
 package com.courses.api.controller;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,6 +53,13 @@ public class CourseController extends Controller {
 			BindingResult result) throws Exception {
 		verifyInvalidParam(result);
 		return courseService.update(request, courseId);
+	}
+	
+	@ApiOperation(value = "Lista todos os cursos do usuário")
+	@RequestMapping(method = RequestMethod.GET)
+	@ResponseStatus(value = HttpStatus.OK)
+	public List<CourseResponse> listAll() throws Exception {
+		return courseService.listAllUserLogged();
 	}
 	
 	@ApiOperation(value = "Deleta um curso")

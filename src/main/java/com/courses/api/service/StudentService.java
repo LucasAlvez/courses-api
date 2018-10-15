@@ -42,8 +42,9 @@ public class StudentService {
 
 		return StudentBuilder.buildResponse(newStudent);
 	}
-	
-	public StudentResponse update(StudentUpdateRequest request, Long studentId) throws Exception, ResourceNotFoundException {
+
+	public StudentResponse update(StudentUpdateRequest request, Long studentId)
+			throws Exception, ResourceNotFoundException {
 
 		StudentEntity studentById = getStudentById(studentId);
 

@@ -5,11 +5,9 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -18,7 +16,6 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.validation.Valid;
 
 import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters.LocalDateTimeConverter;
 import org.springframework.security.core.GrantedAuthority;
@@ -40,31 +37,32 @@ public class UserEntity implements UserDetails {
 	private String email;
 
 	private String pass;
-	
+
 	@Convert(converter = LocalDateTimeConverter.class)
 	private LocalDateTime createDate;
 
 	@Convert(converter = LocalDateTimeConverter.class)
 	private LocalDateTime updateDate;
 
-	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@ManyToMany
 	@JoinTable(name = "users_roles", joinColumns = { @JoinColumn(name = "user_id") }, inverseJoinColumns = {
-	@JoinColumn(name = "role_id") })
+			@JoinColumn(name = "role_id") })
 	private Set<RoleEntity> roles = new HashSet<>();
 
-	@Valid
-	@OneToOne(cascade = CascadeType.ALL, mappedBy = "user")
-	private StudentEntity student;
+	@OneToOne
+	@JoinColumn(name = "account_id")
+	private AccountEntity account;
 
 	public UserEntity() {
 	}
 
-	public UserEntity(Long id, String name, String email, String pass, Set<RoleEntity> roles) {
+	public UserEntity(Long id, String name, String email, String pass, Set<RoleEntity> roles, AccountEntity account) {
 		this.id = id;
 		this.name = name;
 		this.email = email;
 		this.pass = pass;
 		this.roles = roles;
+		this.account = account;
 	}
 
 	public Long getId() {
@@ -107,33 +105,28 @@ public class UserEntity implements UserDetails {
 		this.roles = roles;
 	}
 
-	public StudentEntity getStudent() {
-		return student;
+	public AccountEntity getAccount() {
+		return account;
 	}
 
-	public void setStudent(StudentEntity student) {
-		this.student = student;
+	public void setAccount(AccountEntity account) {
+		this.account = account;
 	}
-	
+
 	public LocalDateTime getCreateDate() {
 		return createDate;
 	}
-	
+
 	public void setCreateDate(LocalDateTime createDate) {
 		this.createDate = createDate;
 	}
-	
+
 	public LocalDateTime getUpdateDate() {
 		return updateDate;
 	}
-	
+
 	public void setUpdateDate(LocalDateTime updateDate) {
 		this.updateDate = updateDate;
-	}
-
-	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return (Collection<? extends GrantedAuthority>) this.roles;
 	}
 
 	@Override
@@ -164,5 +157,10 @@ public class UserEntity implements UserDetails {
 	@Override
 	public boolean isEnabled() {
 		return true;
+	}
+
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		return null;
 	}
 }

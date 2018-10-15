@@ -1,12 +1,17 @@
 package com.courses.api.entity;
 
 import java.io.Serializable;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -20,10 +25,10 @@ public class StudentEntity implements Serializable {
 	private Long id;
 
 	private String name;
-	
-	@OneToOne
-    @JoinColumn(name = "user_id")
-	private UserEntity user;
+
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@JoinTable(name = "courses_students", joinColumns = { @JoinColumn(name = "course_id") }, inverseJoinColumns = { @JoinColumn(name = "student_id") })
+	private List<CourseEntity> courses;
 	
 	
 	public Long getId() {
@@ -41,12 +46,12 @@ public class StudentEntity implements Serializable {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
-	public UserEntity getUser() {
-		return user;
+
+	public List<CourseEntity> getCourses() {
+		return courses;
 	}
-	
-	public void setUser(UserEntity user) {
-		this.user = user;
+
+	public void setCourses(List<CourseEntity> courses) {
+		this.courses = courses;
 	}
 }
