@@ -6,10 +6,13 @@ import java.util.List;
 
 import javax.persistence.Convert;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters.LocalDateTimeConverter;
@@ -31,6 +34,10 @@ public class CategoryEntity implements Serializable {
 
 	@Convert(converter = LocalDateTimeConverter.class)
 	private LocalDateTime updateDate;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "account_id")
+	private AccountEntity account;
 
 	@ManyToMany(mappedBy = "categories")
 	private List<CourseEntity> courses;
@@ -65,6 +72,14 @@ public class CategoryEntity implements Serializable {
 
 	public void setUpdateDate(LocalDateTime updateDate) {
 		this.updateDate = updateDate;
+	}
+
+	public AccountEntity getAccount() {
+		return account;
+	}
+
+	public void setAccount(AccountEntity account) {
+		this.account = account;
 	}
 
 	public List<CourseEntity> getCourses() {

@@ -9,6 +9,8 @@ public class CategoryResponse {
 	private String createDate;
 	
 	private String updateDate;
+
+	private AccountResponse account;
 	
 	public Long getId() {
 		return id;
@@ -40,5 +42,13 @@ public class CategoryResponse {
 	
 	public void setUpdateDate(String updateDate) {
 		this.updateDate = updateDate;
+	}
+
+	public AccountResponse getAccount() {
+		return account;
+	}
+
+	public void setAccount(AccountResponse account) {
+		this.account = account;
 	}
 }

@@ -4,17 +4,19 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.courses.api.entity.AccountEntity;
 import com.courses.api.entity.CategoryEntity;
 import com.courses.api.request.CategoryRequest;
 import com.courses.api.response.CategoryResponse;
 
 public class CategoryBuilder {
 
-	public static CategoryEntity buildRequest(CategoryRequest request) {
+	public static CategoryEntity buildRequest(CategoryRequest request, AccountEntity account) {
 		CategoryEntity entity = new CategoryEntity();
 		entity.setName(request.getName());
 		entity.setCreateDate(LocalDateTime.now());
 		entity.setUpdateDate(LocalDateTime.now());
+		entity.setAccount(account);
 		return entity;
 	}
 
@@ -30,6 +32,7 @@ public class CategoryBuilder {
 		response.setName(entity.getName());
 		response.setCreateDate(entity.getCreateDate().toString());
 		response.setUpdateDate(entity.getUpdateDate().toString());
+		response.setAccount(AccountBuilder.buildResponse(entity.getAccount()));
 		return response;
 	}
 

@@ -114,11 +114,11 @@ public class CourseService {
 		userLogged.orElseThrow(() -> new Exception("Usuário não encontrado"));
 
 		AccountEntity account = userLogged.get().getAccount();
-		
+
 		CourseEntity course = getCourseById(courseId);
-		
+
 		validateCourse(course, account);
-		
+
 		courseRepository.delete(course);
 	}
 
@@ -129,7 +129,7 @@ public class CourseService {
 	}
 
 	private void validateCourse(CourseEntity course, AccountEntity account) throws Exception {
-		if (course.getAccount().equals(account)) {
+		if (!course.getAccount().equals(account)) {
 			throw new Exception("Curso não pertence ao usuário");
 		}
 	}

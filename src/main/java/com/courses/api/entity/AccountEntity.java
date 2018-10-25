@@ -42,6 +42,9 @@ public class AccountEntity implements Serializable {
 	@Valid
 	@OneToOne(mappedBy = "account")
 	private UserEntity user;
+
+	@OneToMany(mappedBy = "account")
+	private List<CourseEntity> categories;
 	
 	@OneToMany(mappedBy = "account")
 	private List<CourseEntity> courses;
@@ -100,6 +103,14 @@ public class AccountEntity implements Serializable {
 	
 	public void setUser(UserEntity user) {
 		this.user = user;
+	}
+
+	public List<CourseEntity> getCategories() {
+		return categories;
+	}
+
+	public void setCategories(List<CourseEntity> categories) {
+		this.categories = categories;
 	}
 	
 	public List<CourseEntity> getCourses() {
