@@ -72,16 +72,11 @@ public class UserService {
 		user.setAccount(account);
 		userRepository.save(user);
 	}
-
-	public UserResponse findById(Long userId) {
-		UserEntity user = getUserById(userId);
-		return UserBuilder.buildResponse(user);
-	}
 	
 	public AccountResponse returnUserLogged () throws Exception {
 		Optional<UserEntity> userLogged = Optional.ofNullable(UserService.getUserLogged());
 		userLogged.orElseThrow(() -> new Exception("Usuário não encontrado"));
-
+		
 		AccountEntity account = userLogged.get().getAccount();
 		
 		return AccountBuilder.buildResponse(account);
@@ -112,11 +107,6 @@ public class UserService {
 		}
 
 		return new PageImpl<>(userResponse, pageRequest, userRepository.findAll(pageRequest).getSize());
-	}
-
-	public void delete(Long userId) {
-		UserEntity user = getUserById(userId);
-		userRepository.delete(user);
 	}
 
 	private UserEntity getUserById(Long userId) throws ResourceNotFoundException {

@@ -3,7 +3,6 @@ package com.courses.api.builder;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import com.courses.api.entity.CategoryEntity;
 import com.courses.api.request.CategoryRequest;
