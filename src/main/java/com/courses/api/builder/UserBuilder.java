@@ -9,7 +9,6 @@ import java.util.Set;
 import com.courses.api.entity.RoleEntity;
 import com.courses.api.entity.UserEntity;
 import com.courses.api.request.UserRequest;
-import com.courses.api.request.UserUpdateRequest;
 import com.courses.api.response.RoleResponse;
 import com.courses.api.response.UserResponse;
 
@@ -35,7 +34,7 @@ public class UserBuilder {
 		return responseRoles;
 	}
 
-	public static UserEntity buildUpdateRequest(UserUpdateRequest request, UserEntity entity) {
+	public static UserEntity buildUpdateRequest(UserRequest request, UserEntity entity) {
 		entity.setName(request.getName());
 		entity.setEmail(request.getEmail());
 		entity.setPass(request.getPass());

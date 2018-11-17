@@ -24,6 +24,11 @@ public class CourseBuilder {
 		return entity;
 	}
 
+	public static CourseEntity buildStudent (CourseEntity course, AccountEntity account){
+		course.getStudents().add(account);
+		return course;
+	}
+
 	public static CourseEntity buildUpdateRequest(CourseRequest request, CourseEntity entity,
 			List<CategoryEntity> categories) {
 		entity.setName(request.getName());
@@ -42,6 +47,7 @@ public class CourseBuilder {
 		response.setUpdateDate(entity.getUpdateDate().toString());
 		response.setCategories(CategoryBuilder.to(entity.getCategories()));
 		response.setAccount(AccountBuilder.buildResponse(entity.getAccount()));
+		response.setStudents(AccountBuilder.to(entity.getStudents()));
 		return response;
 	}
 

@@ -9,7 +9,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,14 +19,15 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.courses.api.entity.UserEntity;
+import com.courses.api.enums.CourseSort;
 import com.courses.api.enums.SortOrder;
 import com.courses.api.enums.UserSort;
 import com.courses.api.request.UserRequest;
 import com.courses.api.request.UserRolesRequest;
 import com.courses.api.response.AccountResponse;
+import com.courses.api.response.CourseResponse;
 import com.courses.api.response.UserResponse;
 import com.courses.api.security.JWTUtil;
-import com.courses.api.security.Permissions;
 import com.courses.api.service.UserService;
 
 import io.swagger.annotations.Api;
@@ -37,13 +37,13 @@ import io.swagger.annotations.ApiOperation;
 @Api(tags = "users", description = "Usuários")
 @RequestMapping(value = "/v1/users")
 public class UserController extends Controller {
-	
+
 	@Autowired
 	UserService userService;
-	
+
 	@Autowired
 	JWTUtil jwtUtil;
-	
+
 	@ApiOperation(value = "Cria um usuário")
 	@RequestMapping(method = RequestMethod.POST)
 	@ResponseStatus(HttpStatus.OK)
@@ -52,43 +52,54 @@ public class UserController extends Controller {
 		verifyInvalidParam(result);
 		return userService.create(request);
 	}
-	
+
 	@ApiOperation(value = "retorna usuário loagdo")
-	@RequestMapping(method = RequestMethod.GET)
+	@RequestMapping(value = "/logged", method = RequestMethod.GET)
 	@ResponseStatus(HttpStatus.OK)
-	@PreAuthorize(Permissions.DEFAULT)
+	// @PreAuthorize(Permissions.DEFAULT)
 	public AccountResponse returnUserLogged() throws Exception {
 		return userService.returnUserLogged();
 	}
 
-	@ApiOperation(value = "Lista todos os usuários")
-	@RequestMapping(value = "/users", method = RequestMethod.GET)
+	@ApiOperation(value = "Lista todos os cursos do usuário")
+	@RequestMapping(value = "courses", method = RequestMethod.GET)
 	@ResponseStatus(value = HttpStatus.OK)
-	@PreAuthorize(Permissions.ADMIN)
+	//@PreAuthorize(Permissions.DEFAULT)
+	public Page<CourseResponse> listAll(@RequestParam(value = "page", defaultValue = "0") Integer page,
+			@RequestParam(value = "size", defaultValue = "24") Integer size,
+			@RequestParam(value = "sortBy", defaultValue = "id") CourseSort sortBy,
+			@RequestParam(value = "sortOrder", defaultValue = "DESC") SortOrder sortOrder) throws Exception {
+		return userService.listAllCoursesUserLogged(page, size, sortBy, sortOrder);
+	}
+
+	@ApiOperation(value = "Lista todos os usuários")
+	@RequestMapping(method = RequestMethod.GET)
+	@ResponseStatus(value = HttpStatus.OK)
+	//@PreAuthorize(Permissions.ADMIN)
 	public Page<UserResponse> listAllAccounts(@RequestParam(value = "page", defaultValue = "0") Integer page,
 			@RequestParam(value = "size", defaultValue = "24") Integer size,
 			@RequestParam(value = "sortBy", defaultValue = "id") UserSort sortBy,
 			@RequestParam(value = "sortOrder", defaultValue = "DESC") SortOrder sortOrder) throws Exception {
 		return userService.listAll(page, size, sortBy, sortOrder);
 	}
-	
+
 	@ApiOperation(value = "Atuzaliza Token")
-	@RequestMapping(value="/auth/refresh_token", method=RequestMethod.POST)
+	@RequestMapping(value = "/auth/refresh_token", method = RequestMethod.POST)
 	@ResponseStatus(HttpStatus.OK)
-	@PreAuthorize(Permissions.DEFAULT)
+	//@PreAuthorize(Permissions.DEFAULT)
 	public ResponseEntity<Void> refreshToken(HttpServletResponse response) throws AuthenticationException {
-	UserEntity user = UserService.getUserLogged();
-	String token = jwtUtil.generateToken(user.getUsername());
-	response.addHeader("Authorization", "Bearer " + token);
-	return ResponseEntity.noContent().build();
+		UserEntity user = UserService.getUserLogged();
+		String token = jwtUtil.generateToken(user.getUsername());
+		response.addHeader("Authorization", "Bearer " + token);
+		return ResponseEntity.noContent().build();
 	}
 
 	@ApiOperation(value = "Adiciona permissão ao usuario")
 	@RequestMapping(value = "/{userId}/roles", method = RequestMethod.PATCH)
 	@ResponseStatus(value = HttpStatus.OK)
-	@PreAuthorize(Permissions.ADMIN)
-	public void patchRoles(@PathVariable("userId") @Valid Long userId,
-			@RequestBody @Valid UserRolesRequest request, BindingResult result) throws Exception {
+	//@PreAuthorize(Permissions.ADMIN)
+	public void patchRoles(@PathVariable("userId") @Valid Long userId, @RequestBody @Valid UserRolesRequest request,
+			BindingResult result) throws Exception {
 		verifyInvalidParam(result);
 		userService.patchRoles(userId, request);
 	}

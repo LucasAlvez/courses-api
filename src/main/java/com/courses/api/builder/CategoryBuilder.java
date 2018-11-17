@@ -32,7 +32,6 @@ public class CategoryBuilder {
 		response.setName(entity.getName());
 		response.setCreateDate(entity.getCreateDate().toString());
 		response.setUpdateDate(entity.getUpdateDate().toString());
-		response.setAccount(AccountBuilder.buildResponse(entity.getAccount()));
 		return response;
 	}
 

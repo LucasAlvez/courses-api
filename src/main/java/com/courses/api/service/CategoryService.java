@@ -86,7 +86,7 @@ public class CategoryService {
 			categoryResponse.add(CategoryBuilder.buildResponse(c));
 		}
 
-		return new PageImpl<>(categoryResponse, pageRequest, categoryRepository.findAll(pageRequest).getSize());
+		return new PageImpl<>(categoryResponse, pageRequest, categoryResponse.size());
 	}
 
 	public void delete(Long categoryId) throws Exception {

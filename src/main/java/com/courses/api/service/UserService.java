@@ -17,27 +17,35 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.courses.api.builder.AccountBuilder;
+import com.courses.api.builder.CourseBuilder;
 import com.courses.api.builder.UserBuilder;
 import com.courses.api.entity.AccountEntity;
+import com.courses.api.entity.CourseEntity;
 import com.courses.api.entity.UserEntity;
+import com.courses.api.enums.CourseSort;
 import com.courses.api.enums.SortOrder;
 import com.courses.api.enums.UserSort;
 import com.courses.api.repository.AccountRepository;
+import com.courses.api.repository.CourseRepository;
 import com.courses.api.repository.UserRepository;
 import com.courses.api.request.UserRequest;
 import com.courses.api.request.UserRolesRequest;
 import com.courses.api.response.AccountResponse;
+import com.courses.api.response.CourseResponse;
 import com.courses.api.response.UserResponse;
 import com.courses.api.service.email.EmailService;
 
 @Service
 public class UserService {
-	
+
 	@Autowired
 	UserRepository userRepository;
-	
+
 	@Autowired
 	AccountRepository accountRepository;
+
+	@Autowired
+	CourseRepository courseRepository;
 
 	@Autowired
 	EmailService emailService;
@@ -51,14 +59,14 @@ public class UserService {
 
 		UserEntity user = UserBuilder.buildRequest(request);
 		UserEntity newUser = userRepository.save(user);
-		
+
 		createAccount(newUser);
-		
+
 		emailService.confirmationOfRegistration(newUser);
 
 		return UserBuilder.buildResponse(newUser);
 	}
-	
+
 	private void createAccount(UserEntity user) {
 		AccountEntity account = new AccountEntity();
 		account.setName(user.getName());
@@ -68,24 +76,65 @@ public class UserService {
 		account.setCreateDate(LocalDateTime.now());
 		account.setUpdateDate(LocalDateTime.now());
 		accountRepository.save(account);
-		
+
 		user.setAccount(account);
 		userRepository.save(user);
 	}
-	
-	public AccountResponse returnUserLogged () throws Exception {
+
+	public AccountResponse returnUserLogged() throws Exception {
 		Optional<UserEntity> userLogged = Optional.ofNullable(UserService.getUserLogged());
 		userLogged.orElseThrow(() -> new Exception("Usuário não encontrado"));
-		
+
 		AccountEntity account = userLogged.get().getAccount();
-		
+
 		return AccountBuilder.buildResponse(account);
 	}
 
 	public void patchRoles(Long userId, UserRolesRequest request) {
 		UserEntity user = getUserById(userId);
-		user.getRoles().add(request.getRole());;
+		user.getRoles().add(request.getRole());
+		;
 		userRepository.save(user);
+	}
+
+/*	public List<CourseResponse> listAllCoursesUserLogged() throws Exception {
+		Optional<UserEntity> userLogged = Optional.ofNullable(UserService.getUserLogged());
+		userLogged.orElseThrow(() -> new Exception("Usuário não encontrado"));
+
+		AccountEntity account = userLogged.get().getAccount();
+
+		List<CourseEntity> courses = courseRepository.findByAccount(account);
+
+		return CourseBuilder.to(courses);
+	} */
+
+	public Page<CourseResponse> listAllCoursesUserLogged(Integer page, Integer size, CourseSort sortBy, SortOrder sortOrder)
+			throws Exception {
+		Optional<UserEntity> userLogged = Optional.ofNullable(UserService.getUserLogged());
+		userLogged.orElseThrow(() -> new Exception("Usuário não encontrado"));
+
+		AccountEntity account = userLogged.get().getAccount();
+
+		PageRequest pageRequest = null;
+
+		if (SortOrder.ASC.equals(sortOrder)) {
+			pageRequest = PageRequest.of(page, size, Direction.ASC, sortBy.toString());
+		}
+
+		if (SortOrder.DESC.equals(sortOrder)) {
+			pageRequest = PageRequest.of(page, size, Direction.DESC, sortBy.toString());
+		}
+
+		Page<CourseEntity> courses = courseRepository.findAll(pageRequest);
+
+		List<CourseResponse> coursesResponse = new ArrayList<>();
+		for (CourseEntity c : courses) {
+			if (c.getAccount().equals(account)) {
+				coursesResponse.add(CourseBuilder.buildResponse(c));
+			}
+		}
+
+		return new PageImpl<>(coursesResponse, pageRequest, coursesResponse.size());
 	}
 
 	public Page<UserResponse> listAll(Integer page, Integer size, UserSort sortBy, SortOrder sortOrder) {
@@ -106,7 +155,7 @@ public class UserService {
 			userResponse.add(UserBuilder.buildResponse(u));
 		}
 
-		return new PageImpl<>(userResponse, pageRequest, userRepository.findAll(pageRequest).getSize());
+		return new PageImpl<>(userResponse, pageRequest, userResponse.size());
 	}
 
 	private UserEntity getUserById(Long userId) throws ResourceNotFoundException {
@@ -114,13 +163,13 @@ public class UserService {
 		user.orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrada"));
 		return user.get();
 	}
-	
+
 	public static UserEntity getUserLogged() throws AuthenticationException {
 		try {
 			UserEntity user = (UserEntity) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 			return user;
 		} catch (Exception e) {
-			throw new  AuthenticationException("Não foi possivel encontrar dados do usuario logado");
+			throw new AuthenticationException("Não foi possivel encontrar dados do usuario logado");
 		}
 	}
 }

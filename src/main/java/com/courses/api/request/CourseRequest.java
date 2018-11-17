@@ -1,8 +1,6 @@
 package com.courses.api.request;
 
-import static com.courses.api.validations.BeanValidation.REQUIRED_DESCRIPTION;
-import static com.courses.api.validations.BeanValidation.REQUIRED_DURATION;
-import static com.courses.api.validations.BeanValidation.REQUIRED_NAME;
+import static com.courses.api.validations.BeanValidation.*;
 
 import java.util.List;
 
@@ -17,7 +15,6 @@ public class CourseRequest {
 	@NotBlank(message = REQUIRED_NAME)
 	private String name;
 
-	@NotBlank(message = REQUIRED_DESCRIPTION)
 	private String description;
 
 	@NotNull(message = REQUIRED_DURATION)

@@ -17,7 +17,9 @@ public class CourseResponse {
 	private List<CategoryResponse> categories;
 	
 	private AccountResponse account;
-
+	
+	private List<AccountResponse> students;
+	
 	public Long getId() {
 		return id;
 	}
@@ -72,5 +74,13 @@ public class CourseResponse {
 	
 	public void setAccount(AccountResponse account) {
 		this.account = account;
+	}
+	
+	public List<AccountResponse> getStudents() {
+		return students;
+	}
+	
+	public void setStudents(List<AccountResponse> students) {
+		this.students = students;
 	}
 }

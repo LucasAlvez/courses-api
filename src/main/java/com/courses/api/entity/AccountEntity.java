@@ -44,7 +44,7 @@ public class AccountEntity implements Serializable {
 	private UserEntity user;
 
 	@OneToMany(mappedBy = "account")
-	private List<CourseEntity> categories;
+	private List<CategoryEntity> categories;
 	
 	@OneToMany(mappedBy = "account")
 	private List<CourseEntity> courses;
@@ -105,11 +105,11 @@ public class AccountEntity implements Serializable {
 		this.user = user;
 	}
 
-	public List<CourseEntity> getCategories() {
+	public List<CategoryEntity> getCategories() {
 		return categories;
 	}
-
-	public void setCategories(List<CourseEntity> categories) {
+	
+	public void setCategories(List<CategoryEntity> categories) {
 		this.categories = categories;
 	}
 	

@@ -64,6 +64,19 @@ public class CourseService {
 		return CourseBuilder.buildResponse(newCourse);
 	}
 
+	public CourseResponse addStudent(Long courseId) throws Exception {
+		Optional<UserEntity> userLogged = Optional.ofNullable(UserService.getUserLogged());
+		userLogged.orElseThrow(() -> new Exception("Usuário não encontrado"));
+
+		AccountEntity account = userLogged.get().getAccount();
+
+		CourseEntity courseById = getCourseById(courseId);
+
+		CourseEntity course = CourseBuilder.buildStudent(courseById, account);
+
+		return CourseBuilder.buildResponse(course);
+	}
+
 	public CourseResponse findById(Long courseId) throws Exception {
 		Optional<UserEntity> userLogged = Optional.ofNullable(UserService.getUserLogged());
 		userLogged.orElseThrow(() -> new Exception("Usuário não encontrado"));
@@ -95,18 +108,7 @@ public class CourseService {
 			coursesResponse.add(CourseBuilder.buildResponse(c));
 		}
 
-		return new PageImpl<>(coursesResponse, pageRequest, courseRepository.findAll(pageRequest).getSize());
-	}
-
-	public List<CourseResponse> listAllUserLogged() throws Exception {
-		Optional<UserEntity> userLogged = Optional.ofNullable(UserService.getUserLogged());
-		userLogged.orElseThrow(() -> new Exception("Usuário não encontrado"));
-
-		AccountEntity account = userLogged.get().getAccount();
-
-		List<CourseEntity> courses = courseRepository.findByAccount(account);
-
-		return CourseBuilder.to(courses);
+		return new PageImpl<>(coursesResponse, pageRequest, coursesResponse.size());
 	}
 
 	public void delete(Long courseId) throws Exception {

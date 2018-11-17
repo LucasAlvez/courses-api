@@ -1,6 +1,5 @@
 package com.courses.api.controller;
 
-
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,11 +34,10 @@ public class CategoryController extends Controller {
 	@Autowired
 	CategoryService categoryService;
 
-
 	@ApiOperation(value = "Cria uma categoria")
-	@RequestMapping(value = "categories", method = RequestMethod.POST)
+	@RequestMapping(method = RequestMethod.POST)
 	@ResponseStatus(HttpStatus.OK)
-	@PreAuthorize(Permissions.ADMIN)
+	//@PreAuthorize(Permissions.ADMIN)
 	public CategoryResponse create(@RequestBody @Valid CategoryRequest request, BindingResult result)
 			throws ResourceNotFoundException, Exception {
 		verifyInvalidParam(result);
@@ -49,7 +47,7 @@ public class CategoryController extends Controller {
 	@ApiOperation(value = "Busca categoria pelo seu id")
 	@RequestMapping(value = "/{categoryId}", method = RequestMethod.GET)
 	@ResponseStatus(HttpStatus.OK)
-	@PreAuthorize(Permissions.DEFAULT)
+	//@PreAuthorize(Permissions.DEFAULT)
 	public CategoryResponse findById(@PathVariable("categoryId") @Valid Long categoryId) throws Exception {
 		return categoryService.findById(categoryId);
 	}
@@ -57,7 +55,7 @@ public class CategoryController extends Controller {
 	@ApiOperation(value = "Atuazaliza uma categoria")
 	@RequestMapping(value = "/{categoryId}", method = RequestMethod.PUT)
 	@ResponseStatus(value = HttpStatus.OK)
-	@PreAuthorize(Permissions.ADMIN)
+	//@PreAuthorize(Permissions.ADMIN)
 	public CategoryResponse update(@RequestBody @Valid CategoryRequest request,
 			@PathVariable("categoryId") @Valid Long categoryId, BindingResult result) throws Exception {
 		verifyInvalidParam(result);
@@ -65,9 +63,9 @@ public class CategoryController extends Controller {
 	}
 
 	@ApiOperation(value = "Lista todos as categorias da plataforma")
-	@RequestMapping(value = "/categories", method = RequestMethod.GET)
+	@RequestMapping(method = RequestMethod.GET)
 	@ResponseStatus(value = HttpStatus.OK)
-	@PreAuthorize(Permissions.ADMIN)
+	//@PreAuthorize(Permissions.DEFAULT)
 	public Page<CategoryResponse> listAll(@RequestParam(value = "page", defaultValue = "0") Integer page,
 			@RequestParam(value = "size", defaultValue = "24") Integer size,
 			@RequestParam(value = "sortBy", defaultValue = "id") CategorySort sortBy,
@@ -78,8 +76,8 @@ public class CategoryController extends Controller {
 	@ApiOperation(value = "Deleta uma categoria")
 	@RequestMapping(value = "/{categoryId}", method = RequestMethod.DELETE)
 	@ResponseStatus(HttpStatus.OK)
-	@PreAuthorize(Permissions.ADMIN)
-	public void delete( @PathVariable("categoryId") @Valid Long categoryId) throws Exception {
+	//@PreAuthorize(Permissions.ADMIN)
+	public void delete(@PathVariable("categoryId") @Valid Long categoryId) throws Exception {
 		categoryService.delete(categoryId);
 	}
 }
