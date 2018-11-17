@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,7 +19,6 @@ import com.courses.api.enums.CategorySort;
 import com.courses.api.enums.SortOrder;
 import com.courses.api.request.CategoryRequest;
 import com.courses.api.response.CategoryResponse;
-import com.courses.api.security.Permissions;
 import com.courses.api.service.CategoryService;
 
 import io.swagger.annotations.Api;

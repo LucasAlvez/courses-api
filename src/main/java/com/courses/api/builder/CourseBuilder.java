@@ -46,7 +46,7 @@ public class CourseBuilder {
 		response.setCreateDate(entity.getCreateDate().toString());
 		response.setUpdateDate(entity.getUpdateDate().toString());
 		response.setCategories(CategoryBuilder.to(entity.getCategories()));
-		response.setAccount(AccountBuilder.buildResponse(entity.getAccount()));
+		response.setProducer(AccountBuilder.buildResponse(entity.getAccount()));
 		response.setStudents(AccountBuilder.to(entity.getStudents()));
 		return response;
 	}

@@ -19,13 +19,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.courses.api.entity.UserEntity;
-import com.courses.api.enums.CourseSort;
 import com.courses.api.enums.SortOrder;
 import com.courses.api.enums.UserSort;
 import com.courses.api.request.UserRequest;
 import com.courses.api.request.UserRolesRequest;
-import com.courses.api.response.AccountResponse;
-import com.courses.api.response.CourseResponse;
 import com.courses.api.response.UserResponse;
 import com.courses.api.security.JWTUtil;
 import com.courses.api.service.UserService;
@@ -57,19 +54,8 @@ public class UserController extends Controller {
 	@RequestMapping(value = "/logged", method = RequestMethod.GET)
 	@ResponseStatus(HttpStatus.OK)
 	// @PreAuthorize(Permissions.DEFAULT)
-	public AccountResponse returnUserLogged() throws Exception {
+	public UserResponse returnUserLogged() throws Exception {
 		return userService.returnUserLogged();
-	}
-
-	@ApiOperation(value = "Lista todos os cursos do usuário")
-	@RequestMapping(value = "courses", method = RequestMethod.GET)
-	@ResponseStatus(value = HttpStatus.OK)
-	//@PreAuthorize(Permissions.DEFAULT)
-	public Page<CourseResponse> listAll(@RequestParam(value = "page", defaultValue = "0") Integer page,
-			@RequestParam(value = "size", defaultValue = "24") Integer size,
-			@RequestParam(value = "sortBy", defaultValue = "id") CourseSort sortBy,
-			@RequestParam(value = "sortOrder", defaultValue = "DESC") SortOrder sortOrder) throws Exception {
-		return userService.listAllCoursesUserLogged(page, size, sortBy, sortOrder);
 	}
 
 	@ApiOperation(value = "Lista todos os usuários")

@@ -16,13 +16,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.courses.api.builder.AccountBuilder;
-import com.courses.api.builder.CourseBuilder;
 import com.courses.api.builder.UserBuilder;
 import com.courses.api.entity.AccountEntity;
-import com.courses.api.entity.CourseEntity;
 import com.courses.api.entity.UserEntity;
-import com.courses.api.enums.CourseSort;
 import com.courses.api.enums.SortOrder;
 import com.courses.api.enums.UserSort;
 import com.courses.api.repository.AccountRepository;
@@ -30,8 +26,6 @@ import com.courses.api.repository.CourseRepository;
 import com.courses.api.repository.UserRepository;
 import com.courses.api.request.UserRequest;
 import com.courses.api.request.UserRolesRequest;
-import com.courses.api.response.AccountResponse;
-import com.courses.api.response.CourseResponse;
 import com.courses.api.response.UserResponse;
 import com.courses.api.service.email.EmailService;
 
@@ -81,13 +75,13 @@ public class UserService {
 		userRepository.save(user);
 	}
 
-	public AccountResponse returnUserLogged() throws Exception {
+	public UserResponse returnUserLogged() throws Exception {
 		Optional<UserEntity> userLogged = Optional.ofNullable(UserService.getUserLogged());
 		userLogged.orElseThrow(() -> new Exception("Usuário não encontrado"));
 
-		AccountEntity account = userLogged.get().getAccount();
+		UserEntity user = userLogged.get();
 
-		return AccountBuilder.buildResponse(account);
+		return UserBuilder.buildResponse(user);
 	}
 
 	public void patchRoles(Long userId, UserRolesRequest request) {
@@ -95,46 +89,6 @@ public class UserService {
 		user.getRoles().add(request.getRole());
 		;
 		userRepository.save(user);
-	}
-
-/*	public List<CourseResponse> listAllCoursesUserLogged() throws Exception {
-		Optional<UserEntity> userLogged = Optional.ofNullable(UserService.getUserLogged());
-		userLogged.orElseThrow(() -> new Exception("Usuário não encontrado"));
-
-		AccountEntity account = userLogged.get().getAccount();
-
-		List<CourseEntity> courses = courseRepository.findByAccount(account);
-
-		return CourseBuilder.to(courses);
-	} */
-
-	public Page<CourseResponse> listAllCoursesUserLogged(Integer page, Integer size, CourseSort sortBy, SortOrder sortOrder)
-			throws Exception {
-		Optional<UserEntity> userLogged = Optional.ofNullable(UserService.getUserLogged());
-		userLogged.orElseThrow(() -> new Exception("Usuário não encontrado"));
-
-		AccountEntity account = userLogged.get().getAccount();
-
-		PageRequest pageRequest = null;
-
-		if (SortOrder.ASC.equals(sortOrder)) {
-			pageRequest = PageRequest.of(page, size, Direction.ASC, sortBy.toString());
-		}
-
-		if (SortOrder.DESC.equals(sortOrder)) {
-			pageRequest = PageRequest.of(page, size, Direction.DESC, sortBy.toString());
-		}
-
-		Page<CourseEntity> courses = courseRepository.findAll(pageRequest);
-
-		List<CourseResponse> coursesResponse = new ArrayList<>();
-		for (CourseEntity c : courses) {
-			if (c.getAccount().equals(account)) {
-				coursesResponse.add(CourseBuilder.buildResponse(c));
-			}
-		}
-
-		return new PageImpl<>(coursesResponse, pageRequest, coursesResponse.size());
 	}
 
 	public Page<UserResponse> listAll(Integer page, Integer size, UserSort sortBy, SortOrder sortOrder) {

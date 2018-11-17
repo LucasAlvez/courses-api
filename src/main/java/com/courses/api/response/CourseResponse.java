@@ -15,11 +15,11 @@ public class CourseResponse {
 	private String updateDate;
 
 	private List<CategoryResponse> categories;
-	
-	private AccountResponse account;
-	
+
+	private AccountResponse producer;
+
 	private List<AccountResponse> students;
-	
+
 	public Long getId() {
 		return id;
 	}
@@ -67,19 +67,19 @@ public class CourseResponse {
 	public void setCategories(List<CategoryResponse> categories) {
 		this.categories = categories;
 	}
-	
-	public AccountResponse getAccount() {
-		return account;
+
+	public AccountResponse getProducer() {
+		return producer;
 	}
-	
-	public void setAccount(AccountResponse account) {
-		this.account = account;
+
+	public void setProducer(AccountResponse producer) {
+		this.producer = producer;
 	}
-	
+
 	public List<AccountResponse> getStudents() {
 		return students;
 	}
-	
+
 	public void setStudents(List<AccountResponse> students) {
 		this.students = students;
 	}
