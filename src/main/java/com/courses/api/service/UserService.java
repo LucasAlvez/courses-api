@@ -18,14 +18,16 @@ import org.springframework.stereotype.Service;
 
 import com.courses.api.builder.UserBuilder;
 import com.courses.api.entity.AccountEntity;
+import com.courses.api.entity.RoleEntity;
 import com.courses.api.entity.UserEntity;
 import com.courses.api.enums.SortOrder;
 import com.courses.api.enums.UserSort;
 import com.courses.api.repository.AccountRepository;
 import com.courses.api.repository.CourseRepository;
+import com.courses.api.repository.RoleRepository;
 import com.courses.api.repository.UserRepository;
 import com.courses.api.request.UserRequest;
-import com.courses.api.request.UserRolesRequest;
+import com.courses.api.request.RoleRequest;
 import com.courses.api.response.UserResponse;
 import com.courses.api.service.email.EmailService;
 
@@ -40,6 +42,9 @@ public class UserService {
 
 	@Autowired
 	CourseRepository courseRepository;
+
+	@Autowired
+	RoleRepository roleRepository;
 
 	@Autowired
 	EmailService emailService;
@@ -84,10 +89,12 @@ public class UserService {
 		return UserBuilder.buildResponse(user);
 	}
 
-	public void patchRoles(Long userId, UserRolesRequest request) {
+	public void patchRoles(Long userId, RoleRequest request) {
 		UserEntity user = getUserById(userId);
-		user.getRoles().add(request.getRole());
-		;
+
+		RoleEntity role = getRoleById(request.getId());
+		user.getRoles().add(role);
+
 		userRepository.save(user);
 	}
 
@@ -116,6 +123,12 @@ public class UserService {
 		Optional<UserEntity> user = userRepository.findById(userId);
 		user.orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrada"));
 		return user.get();
+	}
+
+	private RoleEntity getRoleById(Long roleId) throws ResourceNotFoundException {
+		Optional<RoleEntity> role = roleRepository.findById(roleId);
+		role.orElseThrow(() -> new ResourceNotFoundException("Regra não encontrada"));
+		return role.get();
 	}
 
 	public static UserEntity getUserLogged() throws AuthenticationException {

@@ -1,5 +1,5 @@
 package com.courses.api.enums;
 
-public enum UserSort {
+public enum AccountSort {
 	id, name, email
 }

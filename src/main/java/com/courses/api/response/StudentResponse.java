@@ -4,7 +4,7 @@ public class StudentResponse {
 
 	private Long id;
 
-	private String name;
+	private AccountResponse account;
 
 	public Long getId() {
 		return id;
@@ -13,12 +13,12 @@ public class StudentResponse {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	
-	public String getName() {
-		return name;
+
+	public AccountResponse getAccount() {
+		return account;
 	}
-	
-	public void setName(String name) {
-		this.name = name;
+
+	public void setAccount(AccountResponse account) {
+		this.account = account;
 	}
 }

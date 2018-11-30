@@ -102,7 +102,7 @@ public class CategoryService {
 	}
 
 	private void validateCategory(CategoryEntity category, AccountEntity account) throws Exception {
-		if (!category.getAccount().equals(account)) {
+		if (!category.getAccount().getId().equals(account.getId())) {
 			throw new Exception("Categoria não pertence ao usuário");
 		}
 	}

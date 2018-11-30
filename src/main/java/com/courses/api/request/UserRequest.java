@@ -1,11 +1,10 @@
 package com.courses.api.request;
 
-import static com.courses.api.validations.BeanValidation.REQUIRED_NAME;
 import static com.courses.api.validations.BeanValidation.REQUIRED_EMAIL;
+import static com.courses.api.validations.BeanValidation.REQUIRED_NAME;
 import static com.courses.api.validations.BeanValidation.REQUIRED_PASS;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
 public class UserRequest {
 	
@@ -15,7 +14,7 @@ public class UserRequest {
 	@NotBlank(message = REQUIRED_EMAIL)
 	private String email;
 
-	@NotNull(message = REQUIRED_PASS)
+	@NotBlank(message = REQUIRED_PASS)
 	private String pass;
 	
 	public String getName() {

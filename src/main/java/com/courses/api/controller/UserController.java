@@ -22,7 +22,7 @@ import com.courses.api.entity.UserEntity;
 import com.courses.api.enums.SortOrder;
 import com.courses.api.enums.UserSort;
 import com.courses.api.request.UserRequest;
-import com.courses.api.request.UserRolesRequest;
+import com.courses.api.request.RoleRequest;
 import com.courses.api.response.UserResponse;
 import com.courses.api.security.JWTUtil;
 import com.courses.api.service.UserService;
@@ -84,7 +84,7 @@ public class UserController extends Controller {
 	@RequestMapping(value = "/{userId}/roles", method = RequestMethod.PATCH)
 	@ResponseStatus(value = HttpStatus.OK)
 	//@PreAuthorize(Permissions.ADMIN)
-	public void patchRoles(@PathVariable("userId") @Valid Long userId, @RequestBody @Valid UserRolesRequest request,
+	public void patchRoles(@PathVariable("userId") @Valid Long userId, @RequestBody @Valid RoleRequest request,
 			BindingResult result) throws Exception {
 		verifyInvalidParam(result);
 		userService.patchRoles(userId, request);

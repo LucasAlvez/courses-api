@@ -34,14 +34,6 @@ public class UserBuilder {
 		return responseRoles;
 	}
 
-	public static UserEntity buildUpdateRequest(UserRequest request, UserEntity entity) {
-		entity.setName(request.getName());
-		entity.setEmail(request.getEmail());
-		entity.setPass(request.getPass());
-		entity.setUpdateDate(LocalDateTime.now());
-		return entity;
-	}
-
 	public static UserResponse buildResponse(UserEntity entity) {
 		UserResponse response = new UserResponse();
 		response.setId(entity.getId());

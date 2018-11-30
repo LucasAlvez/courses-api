@@ -12,7 +12,8 @@ import com.courses.api.response.CourseResponse;
 
 public class CourseBuilder {
 
-	public static CourseEntity buildRequest(CourseRequest request, List<CategoryEntity> categories,	 AccountEntity account) throws Exception {
+	public static CourseEntity buildRequest(CourseRequest request, List<CategoryEntity> categories,
+			AccountEntity account) throws Exception {
 		CourseEntity entity = new CourseEntity();
 		entity.setName(request.getName());
 		entity.setDescription(request.getDescription());
@@ -22,11 +23,6 @@ public class CourseBuilder {
 		entity.setCategories(categories);
 		entity.setAccount(account);
 		return entity;
-	}
-
-	public static CourseEntity buildStudent (CourseEntity course, AccountEntity account){
-		course.getStudents().add(account);
-		return course;
 	}
 
 	public static CourseEntity buildUpdateRequest(CourseRequest request, CourseEntity entity,
@@ -47,7 +43,7 @@ public class CourseBuilder {
 		response.setUpdateDate(entity.getUpdateDate().toString());
 		response.setCategories(CategoryBuilder.to(entity.getCategories()));
 		response.setProducer(AccountBuilder.buildResponse(entity.getAccount()));
-		response.setStudents(AccountBuilder.to(entity.getStudents()));
+		if (entity.getStudents() != null) { response.setStudents(StudentBuilder.to(entity.getStudents())); }
 		return response;
 	}
 

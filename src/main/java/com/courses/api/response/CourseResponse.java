@@ -2,6 +2,8 @@ package com.courses.api.response;
 
 import java.util.List;
 
+import com.courses.api.entity.StudentEntity;
+
 public class CourseResponse {
 
 	private Long id;
@@ -18,7 +20,7 @@ public class CourseResponse {
 
 	private AccountResponse producer;
 
-	private List<AccountResponse> students;
+	private List<StudentResponse> students;
 
 	public Long getId() {
 		return id;
@@ -75,12 +77,12 @@ public class CourseResponse {
 	public void setProducer(AccountResponse producer) {
 		this.producer = producer;
 	}
-
-	public List<AccountResponse> getStudents() {
+	
+	public List<StudentResponse> getStudents() {
 		return students;
 	}
-
-	public void setStudents(List<AccountResponse> students) {
+	
+	public void setStudents(List<StudentResponse> students) {
 		this.students = students;
 	}
 }

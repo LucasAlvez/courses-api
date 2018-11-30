@@ -17,8 +17,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.courses.api.enums.CourseSort;
 import com.courses.api.enums.SortOrder;
+import com.courses.api.enums.StudentSort;
 import com.courses.api.request.CourseRequest;
 import com.courses.api.response.CourseResponse;
+import com.courses.api.response.StudentResponse;
 import com.courses.api.service.CourseService;
 
 import io.swagger.annotations.Api;
@@ -48,6 +50,18 @@ public class CourseController extends Controller {
 	// @PreAuthorize(Permissions.DEFAULT)
 	public CourseResponse findById(@PathVariable("courseId") @Valid Long courseId) throws Exception {
 		return courseService.findById(courseId);
+	}
+
+	@ApiOperation(value = "Busca todos os estudantes de um curso")
+	@RequestMapping(value = "/{courseId}/students", method = RequestMethod.GET)
+	@ResponseStatus(HttpStatus.OK)
+	// @PreAuthorize(Permissions.DEFAULT)
+	public Page<StudentResponse> listStudentsByCourse(@PathVariable("courseId") @Valid Long courseId,
+			@RequestParam(value = "page", defaultValue = "0") Integer page,
+			@RequestParam(value = "size", defaultValue = "24") Integer size,
+			@RequestParam(value = "sortBy", defaultValue = "id") StudentSort sortBy,
+			@RequestParam(value = "sortOrder", defaultValue = "DESC") SortOrder sortOrder) throws Exception {
+		return courseService.listStudentsByCourse(courseId, page, size, sortBy, sortOrder);
 	}
 
 	@ApiOperation(value = "Atuzaliza um curso")

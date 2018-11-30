@@ -14,7 +14,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters.LocalDateTimeConverter;
@@ -40,20 +39,21 @@ public class CourseEntity implements Serializable {
 
 	@Convert(converter = LocalDateTimeConverter.class)
 	private LocalDateTime updateDate;
-	
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "account_id")
 	private AccountEntity account;
 
-	@OneToMany(fetch = FetchType.LAZY)
-	@JoinColumn(name = "student_id")
-	private List<AccountEntity> students;
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(name = "courses_categories", joinColumns = { @JoinColumn(name = "course_id") }, inverseJoinColumns = {
+			@JoinColumn(name = "category_id") })
+	private List<CategoryEntity> categories;
 
 	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "courses_categories", joinColumns = { @JoinColumn(name = "course_id") }, inverseJoinColumns = { @JoinColumn(name = "category_id") })
-	private List<CategoryEntity> categories;
-	
-	
+	@JoinTable(name = "courses_students", joinColumns = { @JoinColumn(name = "course_id") }, inverseJoinColumns = {
+			@JoinColumn(name = "student_id") })
+	private List<StudentEntity> students;
+
 	public Long getId() {
 		return id;
 	}
@@ -73,7 +73,7 @@ public class CourseEntity implements Serializable {
 	public Integer getDuration() {
 		return duration;
 	}
-	
+
 	public void setDuration(Integer duration) {
 		this.duration = duration;
 	}
@@ -105,25 +105,24 @@ public class CourseEntity implements Serializable {
 	public List<CategoryEntity> getCategories() {
 		return categories;
 	}
-	
+
 	public void setCategories(List<CategoryEntity> categories) {
 		this.categories = categories;
 	}
 
-
 	public AccountEntity getAccount() {
 		return account;
 	}
-	
+
 	public void setAccount(AccountEntity account) {
 		this.account = account;
 	}
 
-	public List<AccountEntity> getStudents() {
+	public List<StudentEntity> getStudents() {
 		return students;
 	}
 
-	public void setStudents(List<AccountEntity> students) {
+	public void setStudents(List<StudentEntity> students) {
 		this.students = students;
 	}
 }

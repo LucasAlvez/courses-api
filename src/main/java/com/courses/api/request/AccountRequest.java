@@ -1,9 +1,8 @@
 package com.courses.api.request;
 
-import static com.courses.api.validations.BeanValidation.REQUIRED_NAME;
-import static com.courses.api.validations.BeanValidation.REQUIRED_EMAIL;
-import static com.courses.api.validations.BeanValidation.REQUIRED_PASS;
+import static com.courses.api.validations.BeanValidation.*;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
@@ -15,8 +14,16 @@ public class AccountRequest {
 	@NotBlank(message = REQUIRED_EMAIL)
 	private String email;
 
-	@NotNull(message = REQUIRED_PASS)
+	@NotBlank(message = REQUIRED_PASS)
 	private String pass;
+
+	@NotNull(message = REQUIRED_ADDRESS)
+	@Valid
+	private AddressRequest address;
+	
+	@NotNull(message = REQUIRED_CONTACT)
+	@Valid
+	private ContactRequest contact;
 	
 	public String getName() {
 		return name;
@@ -40,5 +47,21 @@ public class AccountRequest {
 
 	public void setPass(String pass) {
 		this.pass = pass;
+	}
+
+	public AddressRequest getAddress() {
+		return address;
+	}
+
+	public void setAddress(AddressRequest address) {
+		this.address = address;
+	}
+
+	public ContactRequest getContact() {
+		return contact;
+	}
+
+	public void setContact(ContactRequest contact) {
+		this.contact = contact;
 	}
 }

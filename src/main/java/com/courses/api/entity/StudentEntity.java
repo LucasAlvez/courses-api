@@ -12,14 +12,14 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters.LocalDateTimeConverter;
 
-@Entity(name = "categories")
-@Table(name = "categories")
-public class CategoryEntity implements Serializable {
+@Entity(name = "students")
+@Table(name = "students")
+public class StudentEntity implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -27,20 +27,15 @@ public class CategoryEntity implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	private String name;
-
-	@Convert(converter = LocalDateTimeConverter.class)
-	private LocalDateTime createDate;
-
-	@Convert(converter = LocalDateTimeConverter.class)
-	private LocalDateTime updateDate;
-
-	@ManyToOne(fetch = FetchType.LAZY)
+	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "account_id")
 	private AccountEntity account;
 
-	@ManyToMany(mappedBy = "categories", fetch = FetchType.LAZY)
+	@ManyToMany(mappedBy = "students")
 	private List<CourseEntity> courses;
+
+	@Convert(converter = LocalDateTimeConverter.class)
+	private LocalDateTime createDate;
 
 	public Long getId() {
 		return id;
@@ -48,30 +43,6 @@ public class CategoryEntity implements Serializable {
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public LocalDateTime getCreateDate() {
-		return createDate;
-	}
-
-	public void setCreateDate(LocalDateTime createDate) {
-		this.createDate = createDate;
-	}
-
-	public LocalDateTime getUpdateDate() {
-		return updateDate;
-	}
-
-	public void setUpdateDate(LocalDateTime updateDate) {
-		this.updateDate = updateDate;
 	}
 
 	public AccountEntity getAccount() {
@@ -88,5 +59,13 @@ public class CategoryEntity implements Serializable {
 
 	public void setCourses(List<CourseEntity> courses) {
 		this.courses = courses;
+	}
+
+	public LocalDateTime getCreateDate() {
+		return createDate;
+	}
+
+	public void setCreateDate(LocalDateTime createDate) {
+		this.createDate = createDate;
 	}
 }
