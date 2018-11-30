@@ -16,12 +16,12 @@ public class JWTUtil {
 	private String secret;
 	
 	@Value("${default.expiration}")
-	private Long expiration;
+	private String expiration;
 	
 	public String generateToken (String email) {
 		return Jwts.builder()
 				.setSubject(email)
-				.setExpiration(new Date(System.currentTimeMillis() + expiration))
+				.setExpiration(new Date(System.currentTimeMillis() + Long.parseLong((expiration))))
 				.signWith(SignatureAlgorithm.HS512, secret.getBytes())
 				.compact();
 	}
