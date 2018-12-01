@@ -4,30 +4,30 @@ import java.util.Properties;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.mail.MailSender;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 
-@Configuration 
+@Configuration
 public class MailConfig {
+	
+	@Bean
+	public JavaMailSender getJavaMailSender() {
+	    JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
+	    mailSender.setHost("smtp.gmail.com");
+	    mailSender.setPort(587);
+	     
+	    mailSender.setUsername("apitestconfirm@gmail.com");
+	    mailSender.setPassword("emailapi");
+	     
+	    Properties props = mailSender.getJavaMailProperties();
+	    props.put("mail.transport.protocol", "smtp");
+	    props.put("mail.smtp.auth", "true");
+	    props.put("mail.smtp.starttls.enable", "true");
+	    props.put("mail.debug", "true");
+	    props.put("mail.smtp.ssl", "true");
+	     
+	    return mailSender;
+	}
 
-    @Bean
-    public JavaMailSender javaMailService() {
-        JavaMailSenderImpl javaMailSender = new JavaMailSenderImpl();
-
-        javaMailSender.setHost("smtp.gmail.com");
-        javaMailSender.setPort(465);
-
-        javaMailSender.setJavaMailProperties(getMailProperties());
-
-        return javaMailSender;
-    }
-
-    private Properties getMailProperties() {
-        Properties properties = new Properties();
-        properties.setProperty("mail.transport.protocol", "smtp");
-        properties.setProperty("mail.smtp.auth", "false");
-        properties.setProperty("mail.smtp.starttls.enable", "false");
-        properties.setProperty("mail.debug", "false");
-        return properties;
-    }
 }
