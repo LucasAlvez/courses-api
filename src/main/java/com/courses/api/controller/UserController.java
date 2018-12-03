@@ -21,8 +21,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.courses.api.entity.UserEntity;
 import com.courses.api.enums.SortOrder;
 import com.courses.api.enums.UserSort;
-import com.courses.api.request.UserRequest;
+import com.courses.api.request.EmailRequest;
 import com.courses.api.request.RoleRequest;
+import com.courses.api.request.UserRequest;
 import com.courses.api.response.UserResponse;
 import com.courses.api.security.JWTUtil;
 import com.courses.api.service.UserService;
@@ -61,7 +62,7 @@ public class UserController extends Controller {
 	@ApiOperation(value = "Lista todos os usuários")
 	@RequestMapping(method = RequestMethod.GET)
 	@ResponseStatus(value = HttpStatus.OK)
-	//@PreAuthorize(Permissions.ADMIN)
+	// @PreAuthorize(Permissions.ADMIN)
 	public Page<UserResponse> listAllAccounts(@RequestParam(value = "page", defaultValue = "0") Integer page,
 			@RequestParam(value = "size", defaultValue = "24") Integer size,
 			@RequestParam(value = "sortBy", defaultValue = "id") UserSort sortBy,
@@ -72,7 +73,7 @@ public class UserController extends Controller {
 	@ApiOperation(value = "Atuzaliza Token")
 	@RequestMapping(value = "/auth/refresh_token", method = RequestMethod.POST)
 	@ResponseStatus(HttpStatus.OK)
-	//@PreAuthorize(Permissions.DEFAULT)
+	// @PreAuthorize(Permissions.DEFAULT)
 	public ResponseEntity<Void> refreshToken(HttpServletResponse response) throws AuthenticationException {
 		UserEntity user = UserService.getUserLogged();
 		String token = jwtUtil.generateToken(user.getUsername());
@@ -83,11 +84,19 @@ public class UserController extends Controller {
 	@ApiOperation(value = "Adiciona permissão ao usuario")
 	@RequestMapping(value = "/{userId}/roles", method = RequestMethod.PATCH)
 	@ResponseStatus(value = HttpStatus.OK)
-	//@PreAuthorize(Permissions.ADMIN)
+	// @PreAuthorize(Permissions.ADMIN)
 	public void patchRoles(@PathVariable("userId") @Valid Long userId, @RequestBody @Valid RoleRequest request,
 			BindingResult result) throws Exception {
 		verifyInvalidParam(result);
 		userService.patchRoles(userId, request);
 	}
 
+	@ApiOperation(value = "Envia nova senha do usuário")
+	@RequestMapping(value = "/forgot", method = RequestMethod.POST)
+	@ResponseStatus(HttpStatus.OK)
+	// @PreAuthorize(Permissions.DEFAULT)
+	public void sendNewPassword(@RequestBody @Valid EmailRequest request, BindingResult result) throws Exception {
+		verifyInvalidParam(result);
+		userService.sendNewPassword(request);
+	}
 }

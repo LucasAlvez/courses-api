@@ -16,11 +16,17 @@ public abstract class AbstractEmailService implements EmailService {
 
 	@Override
 	public void confirmationOfRegistration (UserEntity user) {
-		SimpleMailMessage sm = prepareSimpleMailMessage(user);
+		SimpleMailMessage sm = confirmMailMessage(user);
+		sendEmail(sm);
+	}
+	
+	@Override
+	public void sendNewPassword (UserEntity user, String newPass) {
+		SimpleMailMessage sm = senPasswordMailMessage(user, newPass);
 		sendEmail(sm);
 	}
 
-	protected SimpleMailMessage prepareSimpleMailMessage(UserEntity user) {
+	protected SimpleMailMessage confirmMailMessage(UserEntity user) {
 		SimpleMailMessage sm = new SimpleMailMessage();
 		sm.setTo(user.getEmail());
 		sm.setFrom(sender);
@@ -28,6 +34,17 @@ public abstract class AbstractEmailService implements EmailService {
 		sm.setSentDate(new Date(System.currentTimeMillis()));
 		sm.setText("Olá, " + user.getName() + "\n" +
 					"sua conta com o e-mail " + user.getEmail() + " foi criada com sucesso!");
+		return sm;
+	}
+	
+	protected SimpleMailMessage senPasswordMailMessage(UserEntity user, String newPass) {
+		SimpleMailMessage sm = new SimpleMailMessage();
+		sm.setTo(user.getEmail());
+		sm.setFrom(sender);
+		sm.setSubject("Sua nova senha");
+		sm.setSentDate(new Date(System.currentTimeMillis()));
+		sm.setText("Olá, " + user.getName() + "\n" +
+					"como solicitado, segue abaixo sua nova senha de acesso:\n" + "Nova senha de acesso: " + newPass);
 		return sm;
 	}
 }

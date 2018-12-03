@@ -10,5 +10,7 @@ public interface EmailService {
 	
 	public void confirmationOfRegistration (UserEntity account);
 	
+	public void sendNewPassword(UserEntity user, String newPass);
+	
 	public void sendEmail(SimpleMailMessage msg);
 }

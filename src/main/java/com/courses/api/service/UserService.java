@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 import org.apache.http.auth.AuthenticationException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,7 @@ import com.courses.api.repository.CourseRepository;
 import com.courses.api.repository.RoleRepository;
 import com.courses.api.repository.UserRepository;
 import com.courses.api.request.UserRequest;
+import com.courses.api.request.EmailRequest;
 import com.courses.api.request.RoleRequest;
 import com.courses.api.response.UserResponse;
 import com.courses.api.service.email.EmailService;
@@ -51,6 +53,8 @@ public class UserService {
 
 	@Autowired
 	BCryptPasswordEncoder criptPass;
+
+	private Random rand = new Random();
 
 	public UserResponse create(UserRequest request) {
 
@@ -137,6 +141,38 @@ public class UserService {
 			return user;
 		} catch (Exception e) {
 			throw new AuthenticationException("Não foi possivel encontrar dados do usuario logado");
+		}
+	}
+
+	public void sendNewPassword(EmailRequest request) {
+		UserEntity user = userRepository.findByEmail(request.getEmail());
+		if (user == null) {
+			throw new ResourceNotFoundException("Usuário não encontrado");
+		}
+
+		String newPass = newPassword();
+		user.setPass((criptPass.encode(newPass)));
+		userRepository.save(user);
+
+		emailService.sendNewPassword(user, newPass);
+	}
+
+	private String newPassword() {
+		char[] vet = new char[10];
+		for (int i = 0; i < 10; i++) {
+			vet[i] = randomChar();
+		}
+		return new String(vet);
+	}
+
+	private char randomChar() {
+		int opt = rand.nextInt(3);
+		if (opt == 0) { // gera um digito
+			return (char) (rand.nextInt(10) + 48);
+		} else if (opt == 1) { // gera letra maiuscula
+			return (char) (rand.nextInt(26) + 65);
+		} else { // gera letra minuscula
+			return (char) (rand.nextInt(26) + 97);
 		}
 	}
 }

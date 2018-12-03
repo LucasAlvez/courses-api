@@ -15,5 +15,4 @@ public class SmtpEmailService extends AbstractEmailService {
 	public void sendEmail(SimpleMailMessage msg) {
 		mailSender.send(msg);
 	}
-
 }
