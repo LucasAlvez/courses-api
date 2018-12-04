@@ -78,6 +78,7 @@ public class UserController extends Controller {
 		UserEntity user = UserService.getUserLogged();
 		String token = jwtUtil.generateToken(user.getUsername());
 		response.addHeader("Authorization", "Bearer " + token);
+        response.addHeader("access-control-expose-headers", "Authorization");
 		return ResponseEntity.noContent().build();
 	}
 
